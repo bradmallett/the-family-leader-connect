@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
+import { signOut } from '@/utils/supabase/signOut';
 
 export default async function AdminPage() {
   // create client for every protected page
@@ -18,6 +19,7 @@ export default async function AdminPage() {
   <div>
     <h1>admin page</h1>
     <p>Hello {data.user.email}</p>
+    <button onClick={signOut} className="p-2 border-2 cursor-pointer hover:bg-amber-500">SIGNOUT</button>
   </div>
   );
 }
