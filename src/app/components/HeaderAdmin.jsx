@@ -41,17 +41,17 @@ export default function HeaderAdmin( { user } ) {
                 <nav className="mt-5 pl-2 border-l-2 border-gray-600">
                     <ul>
                         <li>
-                            <Link href="/all-forms" className={clsx(pathName === '/all-forms' ? 'font-bold' : 'hover:font-bold')}>
+                            <Link href="/all-forms" className={clsx(pathName === '/all-forms' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
                                 ALL FORMS
                             </Link>
                         </li>
                         <li>
-                            <Link href="/manage-legislators" className={clsx(pathName === '/manage-legislators' ? 'font-bold' : 'hover:font-bold')}>
+                            <Link href="/manage-legislators" className={clsx(pathName === '/manage-legislators' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
                                 MANAGE LEGISLATORS
                             </Link>
                         </li>
                         <li>
-                            <Link href="/create-new-form" className={clsx(pathName === '/create-new-form' ? 'font-bold' : 'hover:font-bold')}>
+                            <Link href="/create-new-form" className={clsx(pathName === '/create-new-form' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
                                 CREATE NEW FORM
                             </Link>
                         </li>
@@ -61,19 +61,19 @@ export default function HeaderAdmin( { user } ) {
             <div>
                 
                 <div className="relative">
-                    <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer flex justify-center items-center">
-                        <UserCircleIcon className="mr-1 h-7 w-7"/>
-                        <p>{`${user.email}`}</p>
+                    <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer flex justify-center items-center group">
+                        <UserCircleIcon className="mr-1 h-7 w-7 group-hover:text-tfl-green"/>
+                        <p className="group-hover:text-tfl-green">{`${user.email}`}</p>
                     </div>
-
 
                     {/* SIGN OUT BUTTON */}
                     {isOpen && (
                         <button 
                             onClick={signOut}
-                            className="signOut p-2 border-2 border-gray-600 absolute top-10 cursor-pointer hover:bg-amber-500"    
+                            className="signOut absolute top-8 p-2 font-bold cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green"   
+                            // p-2 font-bold cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green 
                         >
-                            Sign Out
+                            SIGN OUT
                         </button>   
                     )}
 

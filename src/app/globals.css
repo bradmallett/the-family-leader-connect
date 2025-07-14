@@ -8,9 +8,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
+  --font-crimson-pro: var(--font-crimson-pro);
   --color-paperSwatch: #E7DDD4;
+  --color-tfl-blue: #386d99;
+  --color-tfl-green: #7f9b72;
+  --color-tfl-light-green: #bbcfb0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +26,5 @@
 body {
   /* background: var(--background);
   color: var(--foreground); */
-  font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
