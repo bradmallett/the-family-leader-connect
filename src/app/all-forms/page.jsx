@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { signOut } from '@/utils/supabase/signOut';
-import TestingDb from '@/app/components/TestingDb';
 import HeaderAdmin from '@/app/components/HeaderAdmin';
 
 export default async function allForms() {
@@ -24,7 +23,6 @@ export default async function allForms() {
       <HeaderAdmin user={user}/>
       <h1 className='text-center text-4xl font-bold'>FORMS</h1>
       <p>Hello {data.user.email}</p>
-      <TestingDb />
     </div>
   );
 }

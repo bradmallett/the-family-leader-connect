@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import HeaderAdmin from '@/app/components/HeaderAdmin';
+import AllLegislators from '@/app/components/legislators/AllLegislators';
+import AddLegislatorPopup from '@/app/components/legislators/AddLegislatorPopup';
 
 export default async function manageLegislators() {
     // create client for every protected page
@@ -14,13 +16,13 @@ export default async function manageLegislators() {
     if (error || !data?.user) {
         redirect('/login');
     }
-  const user = data.user;
 
   return (
-    <div className='max-w-[1800px] mx-auto'>
-        <HeaderAdmin user={user}/>
-        <h1 className='text-center text-4xl font-bold'>MANAGE LEGISLATORS</h1>
-        <p>This is where you can manage legislators.</p>
+    <div className='max-w-[1800px] mx-auto font-inter'>
+        <HeaderAdmin user={data.user}/>
+        <h1 className='text-center text-gray-600 text-3xl font-black my-12'>MANAGE LEGISLATORS</h1>
+        <AddLegislatorPopup />
+        <AllLegislators />
     </div>
     );
 }
