@@ -8,6 +8,19 @@ import AddLegislatorForm from '@/app/components/legislators/AddLegislatorForm';
 export default function AddLegislatorPopup() {
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(() => {
+        // CLOSE DROPDOWN WITH CLICK OUTSIDE
+        const handleClickOutside = (event) => {
+            if(isOpen && !event.target.closest(".addLegsPopup")) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => document.removeEventListener("mousedown", handleClickOutside); 
+    }, [isOpen]);
+
     return (
         <div className="mx-auto text-center my-8 font-inter font-bold text-gray-600">
             <h3>ADD LEGISLATOR</h3>
@@ -19,12 +32,12 @@ export default function AddLegislatorPopup() {
 
             {/* POPUP */}
             {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="fixed inset-0 flex items-start justify-center z-50">
                     {/* Backdrop */}
                     <div className="absolute inset-0 bg-gray-900 opacity-75"/>
 
                     {/* Popup content */}
-                    <div className="relative z-10 bg-paperSwatch p-6 shadow-lg w-11/12 max-w-[800px]">
+                    <div className="addLegsPopup mt-20 z-10 bg-paperSwatch p-6 shadow-lg w-11/12 max-w-[600px]">
 
                         {/* form header */}
                         <div className="flex justify-between items-center">
