@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import HeaderAdmin from '@/app/components/HeaderAdmin';
+import CreateFormForm from'@/app/components/createForm/CreateFormForm';
 
 export default async function createNewForm() {
     // create client for every protected page
@@ -18,10 +19,10 @@ export default async function createNewForm() {
   const user = data.user;
 
   return (
-    <div className='max-w-[1800px] mx-auto'>
+    <div className='max-w-[1800px] mx-auto font-inter'>
         <HeaderAdmin user={user}/>
-        <h1>Create New Form!</h1>
-        <p>This is where you can create a new form.</p>
+           <h1 className='text-center text-gray-600 text-3xl font-black my-12'>CREATE NEW FORM</h1>
+           <CreateFormForm />
     </div>
     );
 }
