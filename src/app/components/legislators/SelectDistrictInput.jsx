@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 
-export default function SelectDistrictInput({ updateDistrict }) {
+export default function SelectDistrictInput({ prevDistrict, updateDistrict }) {
     const [showDistricts, setShowDistricts] = useState(false);
-    const [district, setDistrict] = useState('1');
+    const [district, setDistrict] = useState(() => prevDistrict === '' ? '1' : prevDistrict);
     const triggerRef = useRef(null);
     const dropdownRef = useRef(null);
 
@@ -22,7 +22,7 @@ export default function SelectDistrictInput({ updateDistrict }) {
         // calculate space for dropdown selection
         if (showDistricts && triggerRef.current && dropdownRef.current) {
             const triggerRect = triggerRef.current.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - triggerRect.bottom - 16; // 16px padding
+            const spaceBelow = window.innerHeight - triggerRect.bottom - 25; // 25px padding
 
             dropdownRef.current.style.maxHeight = `${spaceBelow}px`;
             dropdownRef.current.style.overflowY = 'auto';
@@ -58,7 +58,7 @@ export default function SelectDistrictInput({ updateDistrict }) {
             {/* Dropdown list of districts */}
             {showDistricts && 
                 <div 
-                    className='districts p-1 absolute flex flex-col top-4 -right-14 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
+                    className='districts p-1 absolute flex flex-col top-15 right-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
                     ref={dropdownRef}
                 >
                     {iowaDistricts.map((district) => (

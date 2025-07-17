@@ -1,4 +1,6 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import DeleteLegislatorPopup from "./DeleteLegislatorPopup";
+import EditLegislatorPopup from "./EditLegislatorPopup";
 
 
 export default function LegislatorsTable({ legislators }) {
@@ -29,18 +31,10 @@ export default function LegislatorsTable({ legislators }) {
                 <td className="p-2 border-r border-gray-400">{leg.chamber}</td>
                 <td className="p-2 border-gray-400">{leg.email}</td>
                 <td className="p-2 text-right">
-
-
-                    <button className="hover:text-amber-500 cursor-pointer peer">
-                        <PencilIcon className="w-5 h-5 inline" />
-                    </button>
-
-
+                    <EditLegislatorPopup legislator={leg}/>
                 </td>
                 <td className="p-2 text-right">
-                    <button className="hover:text-red-500 cursor-pointer">
-                        <TrashIcon className="w-5 h-5 inline" />
-                    </button>
+                    <DeleteLegislatorPopup legislatorID={leg.ID} legislatorName={leg.name}/>
                 </td>
             </tr>
             ))}

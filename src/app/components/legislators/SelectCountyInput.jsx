@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 
-export default function SelectCountyInput({ updateCounty }) {
+export default function SelectCountyInput({ prevCounty, updateCounty }) {
     const [showCounties, setShowCounties] = useState(false);
-    const [county, setCounty] = useState('Adair');
+    const [county, setCounty] = useState(() => prevCounty === '' ? 'Adair' : prevCounty);
     const triggerRef = useRef(null);
     const dropdownRef = useRef(null);
 
@@ -22,7 +22,7 @@ export default function SelectCountyInput({ updateCounty }) {
         // calculate space for dropdown selection
         if (showCounties && triggerRef.current && dropdownRef.current) {
             const triggerRect = triggerRef.current.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - triggerRect.bottom - 16; // 16px padding
+            const spaceBelow = window.innerHeight - triggerRect.bottom - 25; // 25px padding
 
             dropdownRef.current.style.maxHeight = `${spaceBelow}px`;
             dropdownRef.current.style.overflowY = 'auto';
@@ -59,7 +59,7 @@ export default function SelectCountyInput({ updateCounty }) {
             {/* Dropdown list of districts */}
             {showCounties && 
                 <div 
-                    className='counties p-1 absolute flex flex-col top-4 -right-30 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
+                    className='counties p-1 absolute flex flex-col top-15 left-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
                     ref={dropdownRef}
                 >
                     {iowaCounties.map((county) => (

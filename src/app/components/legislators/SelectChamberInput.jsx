@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
-export default function SelectChamberInput({ updateChamber }) {
+export default function SelectChamberInput({ prevChamber, updateChamber }) {
     const [showChambers, setShowChambers] = useState(false);
-    const [chamber, setChamber] = useState('SELECT CHAMBER');
+    const [chamber, setChamber] = useState(() => prevChamber === '' ? 'House' : prevChamber);
     const triggerRef = useRef(null);
     const dropdownRef = useRef(null);
 
@@ -54,7 +54,7 @@ export default function SelectChamberInput({ updateChamber }) {
             {/* Dropdown list of districts */}
             {showChambers && 
                 <div 
-                    className='chambers p-1 absolute flex flex-col top-4 -right-16 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
+                    className='chambers p-1 absolute flex flex-col top-15 right-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
                     ref={dropdownRef}
                 >
                     {chambers.map((chamber) => (

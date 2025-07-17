@@ -6,26 +6,27 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 
-export async function addLegislator(legislator) {
-  const { title, firstName, middleName, lastName, email, district, county, party, chamber } = legislator;
+export async function editLegislator(legislator) {
+  const {legislatorID, title, firstName, middleName, lastName, email, district, county, party, chamber } = legislator;
   const supabase = await createClient();
 
   const { error } = await supabase
     .from('legislators')
-    .insert({
-      title: title,
+    .update({
+      title,
       first_name: firstName,
       middle_name: middleName,
       last_name: lastName,
-      email: email,
-      district: district,
-      county: county,
-      party: party,
-      chamber: chamber
+      email,
+      district,
+      county,
+      party,
+      chamber
       })
+      .eq('id', legislatorID)
 
   if (error) {
-    console.error("Error adding legislator: ", error);
+    console.error("Error editing legislator: ", error);
     redirect('/error')
   }
 

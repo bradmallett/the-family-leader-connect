@@ -1,17 +1,17 @@
 'use client';
 
-import { PlusCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
-import AddLegislatorForm from '@/app/components/legislators/AddLegislatorForm';
+import EditLegislatorForm from '@/app/components/legislators/EditLegislatorForm';
 
 
-export default function AddLegislatorPopup() {
+export default function EditLegislatorPopup({ legislator }) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         // CLOSE DROPDOWN WITH CLICK OUTSIDE
         const handleClickOutside = (event) => {
-            if(isOpen && !event.target.closest(".addLegsPopup")) {
+            if(isOpen && !event.target.closest(".editLegsPopup")) {
                 setIsOpen(false);
             }
         };
@@ -21,17 +21,17 @@ export default function AddLegislatorPopup() {
         return () => document.removeEventListener("mousedown", handleClickOutside); 
     }, [isOpen]);
 
-    function closeAddLegislatorForm() {
+    function closeEditLegislatorForm() {
         setIsOpen(false);
     }
 
     return (
-        <div className="mx-auto text-center my-8 font-inter font-bold text-gray-600">
-            <h3>ADD LEGISLATOR</h3>
+        <div>
             <button
                 onClick={() => setIsOpen(true)}
+                className="hover:text-amber-500 cursor-pointer"
             >
-                <PlusCircleIcon className="w-10 h-10 text-gray-600 inline mr-2 cursor-pointer hover:text-tfl-green" />
+                <PencilIcon className="w-5 h-5 inline" />
             </button>
 
             {/* POPUP */}
@@ -41,17 +41,17 @@ export default function AddLegislatorPopup() {
                     <div className="absolute inset-0 bg-gray-900 opacity-75"/>
 
                     {/* Popup content */}
-                    <div className="addLegsPopup mt-20 z-10 bg-paperSwatch p-6 shadow-lg w-11/12 max-w-[580px]">
+                    <div className="editLegsPopup mt-20 z-10 bg-paperSwatch p-6 shadow-lg w-11/12 max-w-[580px]">
 
                         {/* form header */}
                         <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-black text-tfl-green">ADD NEW LEGISLATOR</h2>
+                            <h2 className="text-xl font-black text-tfl-green">EDIT LEGISLATOR</h2>
                                 <XCircleIcon 
                                     className="h-8 inline text-gray-600 cursor-pointer hover:text-tfl-green"
                                     onClick={() => setIsOpen(false)}
                                 />
                         </div>
-                        <AddLegislatorForm closeAddLegislatorForm={closeAddLegislatorForm}/>
+                        <EditLegislatorForm legislator={legislator} closeEditLegislatorForm={closeEditLegislatorForm}/>
                     </div>
                 </div>
             )}
