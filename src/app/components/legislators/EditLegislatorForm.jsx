@@ -1,21 +1,22 @@
 
-import { addLegislator } from '@/app/actions/legislators/addLegislator';
+import { editLegislator } from '@/app/actions/legislators/editLegislator';
 import { useState } from 'react';
 import SelectDistrictInput from './SelectDistrictInput';
 import SelectCountyInput from './SelectCountyInput';
 import SelectPartyInput from './SelectPartyInput';
 import SelectChamberInput from './SelectChamberInput';
 
-export default function AddLegislatorForm({ closeAddLegislatorForm }) {
-    const [title, setTitle] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [middleName, setMiddleName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [district, setDistrict] = useState('1');
-    const [county, setCounty] = useState('Adair');
-    const [party, setParty] = useState('');
-    const [chamber, setChamber] = useState('');
+export default function EditLegislatorForm({legislator, closeEditLegislatorForm }) {
+    const [legislatorID , setLegislatorID] = useState(legislator.ID)
+    const [title, setTitle] = useState(() => legislator.title === null ? '' : legislator.title); // could be null
+    const [firstName, setFirstName] = useState(legislator.firstName);
+    const [middleName, setMiddleName] = useState(() => legislator.middleName === null ? '' : legislator.middleName);// could be null
+    const [lastName, setLastName] = useState(legislator.lastName);
+    const [email, setEmail] = useState(legislator.email);
+    const [district, setDistrict] = useState(legislator.district);
+    const [county, setCounty] = useState(legislator.county);
+    const [party, setParty] = useState(legislator.party);
+    const [chamber, setChamber] = useState(legislator.chamber);
 
 
     // sent from the district selection component
@@ -39,8 +40,9 @@ export default function AddLegislatorForm({ closeAddLegislatorForm }) {
     }
 
 
-    function handleAddLegislator() {
+    function handleEditLegislator() {
         const legislator = {
+            legislatorID: legislatorID,
             title: title === '' ? null : title.trim(),
             firstName: firstName.trim(),
             middleName: middleName === '' ? null : middleName.trim(),
@@ -52,8 +54,8 @@ export default function AddLegislatorForm({ closeAddLegislatorForm }) {
             chamber
         }
 
-        addLegislator(legislator);
-        closeAddLegislatorForm();
+        editLegislator(legislator);
+        closeEditLegislatorForm();
     }
 
 
@@ -147,20 +149,19 @@ export default function AddLegislatorForm({ closeAddLegislatorForm }) {
                 </label>
             </div>
 
-            <SelectDistrictInput prevDistrict={''} updateDistrict={updateDistrict}/>
-            <SelectCountyInput prevCounty={''} updateCounty={updateCounty}/>
-            <SelectPartyInput prevParty={''} updateParty={updateParty}/>
-            <SelectChamberInput prevChamber={''} updateChamber={updateChamber}/>
-
+            <SelectDistrictInput prevDistrict={legislator.district} updateDistrict={updateDistrict}/>
+            <SelectCountyInput prevCounty={legislator.county} updateCounty={updateCounty}/>
+            <SelectPartyInput prevParty={legislator.party} updateParty={updateParty}/>
+            <SelectChamberInput prevChamber={legislator.chamber} updateChamber={updateChamber}/>
+            
             <div className='w-full text-left font-black text-base'>
                 <button 
-                    onClick={() => handleAddLegislator()}
+                    onClick={() => handleEditLegislator()}
                     className="p-3 mt-3 cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green"   
                 >
-                    ADD LEGISLATOR
+                    SAVE EDIT
                 </button>
             </div>
-
         </div>
     );
 }

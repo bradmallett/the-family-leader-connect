@@ -9,6 +9,7 @@ export default async function AllLegislators() {
     .from("legislators")
     .select(
       `
+        id,
         title,
         first_name,
         middle_name,
@@ -28,9 +29,14 @@ export default async function AllLegislators() {
   }
 
   const formattedLegislators = legislators.map((l) => ({
+    ID: l.id,
     name: `${l.title ? l.title + " " : ""}${l.first_name} ${
       l.middle_name ? l.middle_name + " " : ""
     }${l.last_name}`,
+    title: l.title,
+    firstName: l.first_name,
+    middleName: l.middle_name,
+    lastName: l.last_name,
     email: l.email,
     district: l.district,
     county: l.county,
