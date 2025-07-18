@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ArrowDownCircleIcon } from '@heroicons/react/24/solid';
 
-export default function SelectChamberInput({ prevChamber, updateChamber }) {
+
+export default function SelectAllChamber({ selectAllFromChamber }) {
     const [showChambers, setShowChambers] = useState(false);
-    const [chamber, setChamber] = useState(() => prevChamber === '' ? 'House' : prevChamber);
+    const [chamber, setChamber] = useState('');
     const triggerRef = useRef(null);
     const dropdownRef = useRef(null);
 
+    
     useEffect(() => {
         // CLOSE DROPDOWN WITH CLICK OUTSIDE
         const handleClickOutside = (event) => {
@@ -20,43 +22,46 @@ export default function SelectChamberInput({ prevChamber, updateChamber }) {
         // calculate space for dropdown selection
         if (showChambers && triggerRef.current && dropdownRef.current) {
             const triggerRect = triggerRef.current.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - triggerRect.bottom - 16; // 16px padding
+            const spaceBelow = window.innerHeight - triggerRect.bottom - 25; // 25px padding
 
             dropdownRef.current.style.maxHeight = `${spaceBelow}px`;
             dropdownRef.current.style.overflowY = 'auto';
         }
 
+
         return () => document.removeEventListener("mousedown", handleClickOutside); 
     }, [showChambers]);
 
 
-    // sending the district value to the parent component
+    // sending the party value to the parent component
     useEffect(() => {
-        updateChamber(chamber);
+        if (chamber) {
+            selectAllFromChamber(chamber);
+            setChamber(''); // reset after sending to parent
+        }
     }, [chamber]);
 
     // all iowa chambers
     const chambers = ["House", "Senate",];
 
-
     return (
-        <div className="relative flex flex-col group">
-            <p className='self-start text-xs font-medium group-hover:text-tfl-green'>CHAMBER</p>
+        <div className="relative flex">
             {/* Button to toggle district selection open and closed */}
                 <button
                     ref={triggerRef}
-                    className="p-2 outline-none border-2 border-gray-600 font-bold flex justify-between items-center cursor-pointer group-hover:border-tfl-green group-hover:text-tfl-green"
+                    className="outline-none cursor-pointer"
                     onClick={() => setShowChambers(true)}
                 >
-                    {chamber}<ChevronDownIcon className="size-5 ml-1"/>
+                    <ArrowDownCircleIcon className="h-5 text-gray-600 cursor-pointer hover:text-tfl-green"/>
                 </button>
 
-            {/* Dropdown list of districts */}
+            {/* Dropdown list of parties */}
             {showChambers && 
                 <div 
-                    className='chambers p-1 absolute flex flex-col top-15 right-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
+                    className='chambers p-1 absolute flex flex-col top-5 right-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
                     ref={dropdownRef}
                 >
+                    <p className='p-2'>SELECT FROM CHAMBER</p>
                     {chambers.map((chamber) => (
                         <button
                             key={chamber}

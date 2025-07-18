@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import HeaderAdmin from '@/app/components/HeaderAdmin';
 import CreateFormForm from'@/app/components/createForm/CreateFormForm';
+import getAllLegislators from '../actions/legislators/getAllLegislators';
 
 export default async function createNewForm() {
     // create client for every protected page
@@ -16,13 +17,15 @@ export default async function createNewForm() {
         redirect('/login');
     }
 
-  const user = data.user;
+    const legislators = await getAllLegislators();
+
+
 
   return (
     <div className='max-w-[1800px] mx-auto font-inter'>
-        <HeaderAdmin user={user}/>
-           <h1 className='text-center text-gray-600 text-3xl font-black my-12'>CREATE NEW FORM</h1>
-           <CreateFormForm />
+        <HeaderAdmin user={data.user}/>
+           <h1 className='text-left text-gray-600 text-3xl font-black my-12'>CREATE NEW FORM</h1>
+           <CreateFormForm legislators={legislators} />
     </div>
     );
 }

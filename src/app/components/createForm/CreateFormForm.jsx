@@ -2,8 +2,9 @@
 
 // import { addLegislator } from '@/app/actions/legislators/addLegislator';
 import { useState } from 'react';
+import SelectLegislators from './SelectLegislators'
 
-export default function CreateFormForm() {
+export default function CreateFormForm({ legislators }) {
     const [formName, setFormName] = useState('');
     const [constituentDirection, setConstituentDirection] = useState('');
     const [emailBody, setEmailBody] = useState('');
@@ -103,7 +104,7 @@ export default function CreateFormForm() {
 
             <div className='w-[60%]'>
 
-
+                <SelectLegislators legislators={legislators}/>
 
                 {/* submit button */}
                 <div className='text-right font-black text-base'>
@@ -111,7 +112,7 @@ export default function CreateFormForm() {
                         onClick={() => handleGenerateForm()}
                         className="p-3 mt-3 cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green"   
                     >
-                        LOG FORM FIELDS
+                        GENERATE FORM
                     </button>
                 </div>
 
