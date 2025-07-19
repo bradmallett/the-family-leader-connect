@@ -9,14 +9,21 @@ export default function SelectLegislators({ legislators }) {
     const [selectedLegislators, setSelectedLegislators] = useState([]);
 
 
-    if (!legislators || legislators.length === 0)
-    return <div>No legislators found.</div>;
+    if (!legislators || legislators.length === 0) <div>No legislators found.</div>;
 
 
 
+    // updating this function !!!!
     function selectAllFromDistrict(newDistrict) {
-        const districtLegIDs = legislators.filter((leg) => leg.district === newDistrict).map((l) => l.ID);
-        setSelectedLegislators((prev) => [...new Set([...prev, ...districtLegIDs])]);
+        if(selectedLegislators.length === 0) {
+            const selectedLegsByDistrict = legislators.filter((leg) => leg.district === newDistrict);
+            setSelectedLegislators((prev) => [...new Set([...prev, ...selectedLegsByDistrict])]);
+            return;
+        }
+
+        const selectedLegsByDistrict = selectedLegislators.filter((leg) => leg.district === newDistrict);
+        setSelectedLegislators((prev) => [...new Set([...prev, ...selectedLegsByDistrict])]);
+
     }
 
     function selectAllFromCounty(newCounty) {
@@ -34,6 +41,25 @@ export default function SelectLegislators({ legislators }) {
         setSelectedLegislators((prev) => [...new Set([...prev, ...chamberLegIDs])]);
     }
 
+    // function selectAllFromDistrict(newDistrict) {
+    //     const districtLegIDs = legislators.filter((leg) => leg.district === newDistrict).map((l) => l.ID);
+    //     setSelectedLegislators((prev) => [...new Set([...prev, ...districtLegIDs])]);
+    // }
+
+    // function selectAllFromCounty(newCounty) {
+    //     const countyLegIDs = legislators.filter((leg) => leg.county === newCounty).map((l) => l.ID);
+    //     setSelectedLegislators((prev) => [...new Set([...prev, ...countyLegIDs])]);
+    // }
+
+    // function selectAllFromParty(newParty) {
+    //     const partyLegIDs = legislators.filter((leg) => leg.party === newParty).map((l) => l.ID);
+    //     setSelectedLegislators((prev) => [...new Set([...prev, ...partyLegIDs])]);
+    // }
+
+    // function selectAllFromChamber(newChamber) {
+    //     const chamberLegIDs = legislators.filter((leg) => leg.chamber === newChamber).map((l) => l.ID);
+    //     setSelectedLegislators((prev) => [...new Set([...prev, ...chamberLegIDs])]);
+    // }
 
     function handleCheckboxChange(e) {
         const { value, checked } = e.target;
