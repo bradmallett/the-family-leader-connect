@@ -7,126 +7,135 @@ import SelectAllChamber from "./SelectAllChamber";
 
 export default function SelectLegislators({ legislators }) {
     const [selectedLegislators, setSelectedLegislators] = useState([]);
+    const [selectedDistricts, setSelectedDistricts] = useState([]);
+    const [selectedCounties, setSelectedCounties] = useState('');
+    const [selectedParties, setSelectedParties] = useState('');
+    const [selectedChambers, setSelectedChambers] = useState('');
+    const [countOfSelectedLegislators, setCountOfSelectedLegislators] = useState(0);
 
 
-    if (!legislators || legislators.length === 0) <div>No legislators found.</div>;
+    useEffect(() => {
+        if (selectedDistricts.length > 0 || selectedCounties.length > 0 || selectedParties.length > 0 || selectedChambers.length > 0) {
+            let filtered = legislators;
 
+            if (selectedDistricts.length > 0) {
+                filtered = filtered.filter((leg) => selectedDistricts.includes(leg.district));
+            }
 
+            if (selectedCounties.length > 0) {
+                filtered = filtered.filter((leg) => selectedCounties.includes(leg.county));
+            }
 
-    // updating this function !!!!
-    function selectAllFromDistrict(newDistrict) {
-        if(selectedLegislators.length === 0) {
-            const selectedLegsByDistrict = legislators.filter((leg) => leg.district === newDistrict);
-            setSelectedLegislators((prev) => [...new Set([...prev, ...selectedLegsByDistrict])]);
-            return;
+            if (selectedParties.length > 0) {
+                filtered = filtered.filter((leg) => selectedParties.includes(leg.party));
+            }
+
+            if (selectedChambers.length > 0) {
+                filtered = filtered.filter((leg) => selectedChambers.includes(leg.chamber));
+            }
+
+            setSelectedLegislators([...new Set([...filtered])]);
         }
+       
+    } ,[selectedDistricts, selectedCounties, selectedParties, selectedChambers, legislators]);
 
-        const selectedLegsByDistrict = selectedLegislators.filter((leg) => leg.district === newDistrict);
-        setSelectedLegislators((prev) => [...new Set([...prev, ...selectedLegsByDistrict])]);
 
+    useEffect(() => {
+        setCountOfSelectedLegislators(selectedLegislators.length)
+    } ,[selectedLegislators]);
+
+
+
+
+
+    if (!legislators || legislators.length === 0) return <div>No legislators found.</div>;
+
+    console.log("STATE: selectedLegislators: ", selectedLegislators)
+
+    function selectAllFromDistrict(district) {
+        setSelectedDistricts((prev) => [...new Set([...prev, district])]);
     }
 
-    function selectAllFromCounty(newCounty) {
-        const countyLegIDs = legislators.filter((leg) => leg.county === newCounty).map((l) => l.ID);
-        setSelectedLegislators((prev) => [...new Set([...prev, ...countyLegIDs])]);
+    function selectAllFromCounty(county) {
+        setSelectedCounties((prev) => [...new Set([...prev, county])]);  
     }
 
-    function selectAllFromParty(newParty) {
-        const partyLegIDs = legislators.filter((leg) => leg.party === newParty).map((l) => l.ID);
-        setSelectedLegislators((prev) => [...new Set([...prev, ...partyLegIDs])]);
+    function selectAllFromParty(party) {
+        setSelectedParties((prev) => [...new Set([...prev, party])]);      
     }
 
-    function selectAllFromChamber(newChamber) {
-        const chamberLegIDs = legislators.filter((leg) => leg.chamber === newChamber).map((l) => l.ID);
-        setSelectedLegislators((prev) => [...new Set([...prev, ...chamberLegIDs])]);
+    function selectAllFromChamber(chamber) {
+        setSelectedChambers((prev) => [...new Set([...prev, chamber])]);   
     }
 
-    // function selectAllFromDistrict(newDistrict) {
-    //     const districtLegIDs = legislators.filter((leg) => leg.district === newDistrict).map((l) => l.ID);
-    //     setSelectedLegislators((prev) => [...new Set([...prev, ...districtLegIDs])]);
-    // }
 
-    // function selectAllFromCounty(newCounty) {
-    //     const countyLegIDs = legislators.filter((leg) => leg.county === newCounty).map((l) => l.ID);
-    //     setSelectedLegislators((prev) => [...new Set([...prev, ...countyLegIDs])]);
-    // }
 
-    // function selectAllFromParty(newParty) {
-    //     const partyLegIDs = legislators.filter((leg) => leg.party === newParty).map((l) => l.ID);
-    //     setSelectedLegislators((prev) => [...new Set([...prev, ...partyLegIDs])]);
-    // }
-
-    // function selectAllFromChamber(newChamber) {
-    //     const chamberLegIDs = legislators.filter((leg) => leg.chamber === newChamber).map((l) => l.ID);
-    //     setSelectedLegislators((prev) => [...new Set([...prev, ...chamberLegIDs])]);
-    // }
-
-    function handleCheckboxChange(e) {
-        const { value, checked } = e.target;
-
+    function handleCheckboxChange(leg, checked) {
         setSelectedLegislators((prev) => {
             if (checked) {
-                return [...new Set([...prev, value])];
+                return [...new Set([...prev, leg])];
             } else {
-                return prev.filter((id) => id !== value);
+                return prev.filter((l) => l.ID !== leg.ID);
             }
         });
     }
 
 
     return (
-    <table className="w-full max-w-[1500px] text-center border-collapse mx-auto mb-10">
-        <thead className="text-sm uppercase border-b-2">
-        <tr>
-            <th className="p-2">Select</th>
-            <th className="p-2">Name</th>
-            <th className="p-2">
-                <div className="flex items-center justify-center">
-                    District
-                    <SelectAllDistrict selectAllFromDistrict={selectAllFromDistrict}/>
-                </div>
-            </th>
-            <th className="p-2">
-                <div className="flex items-center justify-center">
-                    County
-                    <SelectAllCounty selectAllFromCounty={selectAllFromCounty}/>
-                </div>
-            </th>
-            <th className="p-2">
-                <div className="flex items-center justify-center">
-                    Party
-                    <SelectAllParty selectAllFromParty={selectAllFromParty}/>
-                </div>
-            </th>
-            <th className="p-2">
-                <div className="flex items-center justify-center">
-                    Chamber
-                    <SelectAllChamber selectAllFromChamber={selectAllFromChamber}/>
-                </div>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        {legislators.map((leg, i) => (
-            <tr key={i} className=" border-b border-gray-400 text-xs">
-                <td className="p-2 border-r border-gray-400">
-                    <input
-                        type="checkbox"
-                        value={leg.ID}
-                        onChange={(e) => handleCheckboxChange(e)}
-                        checked={selectedLegislators.includes(leg.ID)}
-                    />
-                </td>
-                <td className="p-2 border-r border-gray-400">{leg.name}</td>
-                <td className="p-2 font-bold border-r border-gray-400">
-                    {leg.district}
-                </td>
-                <td className="p-2 border-r border-gray-400">{leg.county}</td>
-                <td className="p-2 border-r border-gray-400">{leg.party}</td>
-                <td className="p-2 ">{leg.chamber}</td>
-            </tr>
-        ))}
-        </tbody>
-    </table>
+        <div>
+            <p>{countOfSelectedLegislators} LEGISLATORS SELECTED</p>
+            <table className="w-full max-w-[1500px] text-center border-collapse mx-auto mb-10">
+                <thead className="text-sm uppercase border-b-2">
+                <tr>
+                    <th className="p-2">Select</th>
+                    <th className="p-2">Name</th>
+                    <th className="p-2">
+                        <div className="flex items-center justify-center">
+                            District
+                            <SelectAllDistrict selectAllFromDistrict={selectAllFromDistrict}/>
+                        </div>
+                    </th>
+                    <th className="p-2">
+                        <div className="flex items-center justify-center">
+                            County
+                            <SelectAllCounty selectAllFromCounty={selectAllFromCounty}/>
+                        </div>
+                    </th>
+                    <th className="p-2">
+                        <div className="flex items-center justify-center">
+                            Party
+                            <SelectAllParty selectAllFromParty={selectAllFromParty}/>
+                        </div>
+                    </th>
+                    <th className="p-2">
+                        <div className="flex items-center justify-center">
+                            Chamber
+                            <SelectAllChamber selectAllFromChamber={selectAllFromChamber}/>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {legislators.map((leg, i) => (
+                    <tr key={i} className=" border-b border-gray-400 text-xs">
+                        <td className="p-2 border-r border-gray-400">
+                            <input
+                                type="checkbox"
+                                onChange={(e) => handleCheckboxChange(leg, e.target.checked)}
+                                checked={selectedLegislators.some(selectedLeg => selectedLeg.ID === leg.ID)}
+                            />
+                        </td>
+                        <td className="p-2 border-r border-gray-400">{leg.name}</td>
+                        <td className="p-2 font-bold border-r border-gray-400">
+                            {leg.district}
+                        </td>
+                        <td className="p-2 border-r border-gray-400">{leg.county}</td>
+                        <td className="p-2 border-r border-gray-400">{leg.party}</td>
+                        <td className="p-2 ">{leg.chamber}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+    </div>
     );
 }
