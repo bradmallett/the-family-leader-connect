@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ArrowDownCircleIcon } from '@heroicons/react/24/solid';
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
 
 
 export default function SelectAllParty({ selectAllFromParty }) {
@@ -49,19 +49,19 @@ export default function SelectAllParty({ selectAllFromParty }) {
             {/* Button to toggle district selection open and closed */}
                 <button
                     ref={triggerRef}
-                    className="outline-none cursor-pointer"
+                    className="p-1 outline-none cursor-pointer border-2 flex group hover:border-tfl-green"
                     onClick={() => setShowParties(true)}
                 >
-                    <ArrowDownCircleIcon className="h-5 text-gray-600 cursor-pointer hover:text-tfl-green"/>
+                   <span className="font-medium group-hover:text-tfl-green">SELECT</span><ChevronDownIcon className="h-5 text-gray-600 cursor-pointer group-hover:text-tfl-green"/>
                 </button>
 
             {/* Dropdown list of parties */}
             {showParties && 
                 <div 
-                    className='parties p-1 absolute flex flex-col top-5 right-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
+                    className='parties p-1 absolute flex flex-col top-8 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
                     ref={dropdownRef}
                 >
-                    <p className='p-2'>SELECT FROM PARTY</p>
+                    <p className='p-2 font-black bg-slate-600'>PARTIES</p>
                     {parties.map((party) => (
                         <button
                             key={party}

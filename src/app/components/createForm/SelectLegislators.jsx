@@ -46,11 +46,8 @@ export default function SelectLegislators({ legislators }) {
 
 
 
-
-
     if (!legislators || legislators.length === 0) return <div>No legislators found.</div>;
 
-    console.log("STATE: selectedLegislators: ", selectedLegislators)
 
     function selectAllFromDistrict(district) {
         setSelectedDistricts((prev) => [...new Set([...prev, district])]);
@@ -69,7 +66,6 @@ export default function SelectLegislators({ legislators }) {
     }
 
 
-
     function handleCheckboxChange(leg, checked) {
         setSelectedLegislators((prev) => {
             if (checked) {
@@ -80,62 +76,88 @@ export default function SelectLegislators({ legislators }) {
         });
     }
 
+    function handleSelectAllChange(checked) {
+        if (checked) {
+            setSelectedLegislators([...new Set([...legislators])]);
+            emptySelectedColumns();
+        }
+        else {
+            setSelectedLegislators([]);
+            emptySelectedColumns();
+        }
+    }
+
+    function emptySelectedColumns() {
+        setSelectedDistricts([]);
+        setSelectedCounties([]);
+        setSelectedParties([]);
+        setSelectedChambers([]);
+    }
+
 
     return (
         <div>
-            <p>{countOfSelectedLegislators} LEGISLATORS SELECTED</p>
             <table className="w-full max-w-[1500px] text-center border-collapse mx-auto mb-10">
                 <thead className="text-sm uppercase border-b-2">
                 <tr>
-                    <th className="p-2">Select</th>
-                    <th className="p-2">Name</th>
+                    <th className="p-2 relative top-[12px]">
+                        <div className="flex flex-col">
+                            Select
+                            <input
+                                type="checkbox"
+                                onChange={(e) => handleSelectAllChange(e.target.checked)}
+                            />
+                        </div>
+                    </th>
+                    <th className="p-2 relative top-[18px]">NAME</th>
                     <th className="p-2">
-                        <div className="flex items-center justify-center">
+                        <div className="flex flex-col items-center justify-center">
                             District
                             <SelectAllDistrict selectAllFromDistrict={selectAllFromDistrict}/>
                         </div>
                     </th>
                     <th className="p-2">
-                        <div className="flex items-center justify-center">
+                        <div className="flex flex-col items-center justify-center">
                             County
                             <SelectAllCounty selectAllFromCounty={selectAllFromCounty}/>
                         </div>
                     </th>
                     <th className="p-2">
-                        <div className="flex items-center justify-center">
+                        <div className="flex flex-col items-center justify-center">
                             Party
                             <SelectAllParty selectAllFromParty={selectAllFromParty}/>
                         </div>
                     </th>
                     <th className="p-2">
-                        <div className="flex items-center justify-center">
+                        <div className="flex flex-col items-center justify-center">
                             Chamber
                             <SelectAllChamber selectAllFromChamber={selectAllFromChamber}/>
                         </div>
                     </th>
                 </tr>
                 </thead>
-                <tbody>
-                {legislators.map((leg, i) => (
-                    <tr key={i} className=" border-b border-gray-400 text-xs">
-                        <td className="p-2 border-r border-gray-400">
-                            <input
-                                type="checkbox"
-                                onChange={(e) => handleCheckboxChange(leg, e.target.checked)}
-                                checked={selectedLegislators.some(selectedLeg => selectedLeg.ID === leg.ID)}
-                            />
-                        </td>
-                        <td className="p-2 border-r border-gray-400">{leg.name}</td>
-                        <td className="p-2 font-bold border-r border-gray-400">
-                            {leg.district}
-                        </td>
-                        <td className="p-2 border-r border-gray-400">{leg.county}</td>
-                        <td className="p-2 border-r border-gray-400">{leg.party}</td>
-                        <td className="p-2 ">{leg.chamber}</td>
-                    </tr>
-                ))}
-                </tbody>
+                    <tbody className="">
+                    {legislators.map((leg, i) => (
+                        <tr key={i} className=" border-b border-gray-400 text-xs">
+                            <td className="p-2 border-r border-gray-400">
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) => handleCheckboxChange(leg, e.target.checked)}
+                                    checked={selectedLegislators.some(selectedLeg => selectedLeg.ID === leg.ID)}
+                                />
+                            </td>
+                            <td className="p-2 border-r border-gray-400">{leg.name}</td>
+                            <td className="p-2 font-bold border-r border-gray-400">
+                                {leg.district}
+                            </td>
+                            <td className="p-2 border-r border-gray-400">{leg.county}</td>
+                            <td className="p-2 border-r border-gray-400">{leg.party}</td>
+                            <td className="p-2 ">{leg.chamber}</td>
+                        </tr>
+                    ))}
+                    </tbody>
             </table>
-    </div>
+            <p>{countOfSelectedLegislators} LEGISLATORS SELECTED</p>
+        </div>
     );
 }

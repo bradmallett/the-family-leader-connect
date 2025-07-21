@@ -24,7 +24,6 @@ export default async function createNewForm() {
   return (
     <div className='max-w-[1800px] mx-auto font-inter'>
         <HeaderAdmin user={data.user}/>
-           <h1 className='text-left text-gray-600 text-3xl font-black my-12'>CREATE NEW FORM</h1>
            <CreateFormForm legislators={legislators} />
     </div>
     );

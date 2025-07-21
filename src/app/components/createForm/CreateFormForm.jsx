@@ -27,8 +27,19 @@ export default function CreateFormForm({ legislators }) {
 
     return (
         <div className='w-full flex mx-7'>
-            <div className='w-[30%] text-gray-600 flex flex-col gap-5 mt-5'>
 
+            <div className='w-[60%]'>
+                <SelectLegislators legislators={legislators}/>
+            </div>
+
+            {/* <div className="w-[60%] flex flex-col max-h-[calc(100vh-400px)]">
+                    <div className='flex-1 overflow-y-auto'>
+                        <SelectLegislators legislators={legislators}/>
+                    </div>
+                </div> */}
+
+
+            <div className='w-[30%] text-gray-600 flex flex-col gap-5 mt-5'>
                 <div className="flex flex-col-reverse items-start">
                     <input
                         id="formName"
@@ -98,13 +109,6 @@ export default function CreateFormForm({ legislators }) {
                     </label>
                 </div>
 
-            </div>
-
-
-
-            <div className='w-[60%]'>
-
-                <SelectLegislators legislators={legislators}/>
 
                 {/* submit button */}
                 <div className='text-right font-black text-base'>
@@ -115,8 +119,11 @@ export default function CreateFormForm({ legislators }) {
                         GENERATE FORM
                     </button>
                 </div>
-
             </div>
+
+
+
+            
 
         </div>
     );

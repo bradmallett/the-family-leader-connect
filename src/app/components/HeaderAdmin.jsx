@@ -12,6 +12,7 @@ import { signOut } from '@/utils/supabase/signOut';
 export default function HeaderAdmin( { user } ) {
     const [isOpen, setIsOpen] = useState(false);
     const pathName = usePathname();
+    const [headerTitle, setHeaderTitle] = useState(() => getHeaderTitle())
 
     // CLOSE POPUP WITH CLICK OUTSIDE
     useEffect(() => {
@@ -25,6 +26,20 @@ export default function HeaderAdmin( { user } ) {
         return () => document.removeEventListener("mousedown", handleClickOutside);
 
     }, [isOpen]);
+
+    function getHeaderTitle() {
+        if(pathName === '/all-forms') {
+            return 'ALL FORMS';
+        }
+        
+        if(pathName === '/manage-legislators') {
+            return 'MANAGE LEGISLATORS';
+        }
+
+        if(pathName === '/create-new-form') {
+            return 'CREATE NEW FORM';
+        }
+    }
 
 
     return (
@@ -58,6 +73,7 @@ export default function HeaderAdmin( { user } ) {
                     </ul>
                 </nav>
             </div>
+            <h1 className="text-gray-600 text-3xl font-black my-12">{headerTitle}</h1>
             <div>
                 
                 <div className="relative">
