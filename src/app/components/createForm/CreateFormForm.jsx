@@ -1,10 +1,11 @@
 'use client';
 
-// import { addLegislator } from '@/app/actions/legislators/addLegislator';
+
 import { useState } from 'react';
 import SelectLegislators from './SelectLegislators'
 
 export default function CreateFormForm({ legislators }) {
+    const [selectedLegislators, setSelectedLegislators] = useState([])
     const [formName, setFormName] = useState('');
     const [constituentDirection, setConstituentDirection] = useState('');
     const [emailBody, setEmailBody] = useState('');
@@ -16,30 +17,28 @@ export default function CreateFormForm({ legislators }) {
             formName: formName.trim(),
             constituentDirection: constituentDirection.trim(),
             emailBody: emailBody.trim(),
-            successMessage: successMessage.trim()
+            successMessage: successMessage.trim(),
+            selectedLegislators
         }
 
-        console.log('FORM DATA: ', newFormData)
+       
+    }
 
-        // addLegislator(newFormData);
+
+    function updateSelectedLegislators(legislators) {
+        setSelectedLegislators(legislators);
     }
 
 
     return (
-        <div className='w-full flex mx-7'>
+        <div className='max-w-11/12 flex mx-auto justify-center gap-10'>
 
             <div className='w-[60%]'>
-                <SelectLegislators legislators={legislators}/>
+                <SelectLegislators legislators={legislators} updateSelectedLegislators={updateSelectedLegislators}/>
             </div>
 
-            {/* <div className="w-[60%] flex flex-col max-h-[calc(100vh-400px)]">
-                    <div className='flex-1 overflow-y-auto'>
-                        <SelectLegislators legislators={legislators}/>
-                    </div>
-                </div> */}
 
-
-            <div className='w-[30%] text-gray-600 flex flex-col gap-5 mt-5'>
+            <div className='w-[30%] text-gray-600 flex flex-col gap-6 mt-13'>
                 <div className="flex flex-col-reverse items-start">
                     <input
                         id="formName"
@@ -55,7 +54,7 @@ export default function CreateFormForm({ legislators }) {
                         htmlFor="formName"
                         className="text-xs font-medium peer-focus:text-tfl-green"
                     >
-                    FORM NAME
+                    FORM NAME <span className='text-red-500'>*</span>
                     </label>
                 </div>
                 <div className="flex flex-col-reverse items-start">
@@ -111,7 +110,7 @@ export default function CreateFormForm({ legislators }) {
 
 
                 {/* submit button */}
-                <div className='text-right font-black text-base'>
+                <div className='text-left font-black text-base'>
                     <button 
                         onClick={() => handleGenerateForm()}
                         className="p-3 mt-3 cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green"   
@@ -120,10 +119,6 @@ export default function CreateFormForm({ legislators }) {
                     </button>
                 </div>
             </div>
-
-
-
-            
 
         </div>
     );
