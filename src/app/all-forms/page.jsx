@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import HeaderAdmin from '@/app/components/HeaderAdmin';
+import AllForms from '../components/allForms/allForms';
 
 export default async function allForms() {
   // create client for every protected page
@@ -20,8 +21,7 @@ export default async function allForms() {
   return (
     <div className='max-w-[1800px] mx-auto'>
       <HeaderAdmin user={user}/>
-      <h3 className='text-center text-lg font-bold mb-10'>page under construction...</h3>
-      <p className='text-center'>This page will display all created forms. Here you'll be able to edit, delete, and send forms to constituents.</p>
+      <AllForms />
     </div>
   );
 }
