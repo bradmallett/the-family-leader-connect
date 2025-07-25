@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 
 export default function Home() {
   redirect("/all-forms");
-  
+
   return (
     <div>
-      you shouldn't see this.
+      you should not see this.
     </div>
   );
 }
