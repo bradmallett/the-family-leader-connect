@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
 
 
-export default function SelectCountyInput({ prevCounty, updateCounty }) {
+
+export default function SelectAllCounty({ selectAllFromCounty }) {
     const [showCounties, setShowCounties] = useState(false);
-    const [county, setCounty] = useState(() => prevCounty === '' ? 'Adair' : prevCounty);
+    const [county, setCounty] = useState('');
     const triggerRef = useRef(null);
     const dropdownRef = useRef(null);
 
@@ -33,35 +34,36 @@ export default function SelectCountyInput({ prevCounty, updateCounty }) {
     }, [showCounties]);
 
 
-
     // sending the district value to the parent component
     useEffect(() => {
-        updateCounty(county);
+    if (county) {
+        selectAllFromCounty(county);
+        setCounty(''); // reset after sending to parent
+    }
     }, [county]);
 
-    // all iowa counties
+    // all iowa districts
     const iowaCounties = ["Adair", "Adams", "Allamakee", "Appanoose", "Audubon", "Benton", "Black Hawk", "Boone", "Bremer", "Buchanan", "Buena Vista", "Butler", "Calhoun", "Carroll", "Cass", "Cedar", "Cerro Gordo", "Cherokee", "Chickasaw", "Clarke", "Clay", "Clayton", "Clinton", "Crawford", "Dallas", "Davis", "Decatur", "Delaware", "Des Moines", "Dickinson", "Dubuque", "Emmet", "Fayette", "Floyd", "Franklin", "Fremont", "Greene", "Grundy", "Guthrie", "Hamilton", "Hancock", "Hardin", "Harrison", "Henry", "Howard", "Humboldt", "Ida", "Iowa", "Jackson", "Jasper", "Jefferson", "Johnson", "Jones", "Keokuk", "Kossuth", "Lee", "Linn", "Louisa", "Lucas", "Lyon", "Madison", "Mahaska", "Marion", "Marshall", "Mills", "Mitchell", "Monona", "Monroe", "Montgomery", "Muscatine", "O’Brien", "Osceola", "Page", "Palo Alto", "Plymouth", "Pocahontas", "Polk", "Pottawattamie", "Poweshiek", "Ringgold", "Sac", "Scott", "Shelby", "Sioux", "Story", "Tama", "Taylor", "Union", "Van Buren", "Wapello", "Warren", "Washington", "Wayne", "Webster", "Winnebago", "Winneshiek", "Woodbury", "Worth", "Wright"];
 
 
-
     return (
-        <div className="relative flex flex-col group">
-            <p className='self-start text-xs font-medium group-hover:text-tfl-green'>COUNTY</p>
+        <div className="relative flex">
             {/* Button to toggle district selection open and closed */}
                 <button
                     ref={triggerRef}
-                    className="p-2 outline-none border-2 border-gray-600 font-bold flex justify-between items-center cursor-pointer group-hover:border-tfl-green group-hover:text-tfl-green"
+                    className="p-1 outline-none cursor-pointer border-2 flex group hover:border-tfl-green"
                     onClick={() => setShowCounties(true)}
                 >
-                    {county}<ChevronDownIcon className="size-5 ml-1"/>
+                   <span className="font-medium group-hover:text-tfl-green">SELECT</span><ChevronDownIcon className="h-5 text-gray-600 cursor-pointer group-hover:text-tfl-green"/>
                 </button>
 
-            {/* Dropdown list of districts */}
+            {/* Dropdown list of counties */}
             {showCounties && 
                 <div 
-                    className='counties p-1 absolute flex flex-col top-15 left-0 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
+                    className='counties p-1 absolute flex flex-col top-8 border-t-2 bg-tfl-green text-paperSwatch text-xs z-50 custom-scroll'
                     ref={dropdownRef}
                 >
+                    <p className='p-2 font-black bg-slate-600'>COUNTIES</p>
                     {iowaCounties.map((county) => (
                         <button
                             key={county}
