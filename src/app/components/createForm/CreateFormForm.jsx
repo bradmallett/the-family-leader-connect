@@ -1,8 +1,8 @@
 'use client';
 
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SelectLegislators from './SelectLegislators'
+import { createForm } from '@/app/actions/forms/createForm';
 
 export default function CreateFormForm({ legislators }) {
     const [selectedLegislators, setSelectedLegislators] = useState([])
@@ -10,18 +10,43 @@ export default function CreateFormForm({ legislators }) {
     const [constituentDirection, setConstituentDirection] = useState('');
     const [emailBody, setEmailBody] = useState('');
     const [successMessage, setSuccessMessage] = useState('Your message has been emailed to your local legislators. You can close this window.');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    function handleGenerateForm() {
-        const newFormData = {
-            // title: title === '' ? null : title.trim(),
-            formName: formName.trim(),
-            constituentDirection: constituentDirection.trim(),
-            emailBody: emailBody.trim(),
-            successMessage: successMessage.trim(),
-            selectedLegislators
+    useEffect(() => {
+        if(selectedLegislators.length) {
+            setErrorMessage('');
         }
 
-       
+        if(formName) {
+            setErrorMessage('');
+        }
+    }
+    , [selectedLegislators, formName]);
+
+
+    function handleGenerateForm() {
+        if(selectedLegislators.length && formName) {
+            const newFormData = {
+                formName: formName.trim(),
+                constituentDirection: constituentDirection.trim(),
+                emailBody: emailBody.trim(),
+                successMessage: successMessage.trim(),
+                selectedLegislatorIDs: selectedLegislators.map(leg => leg.ID)
+            }
+    
+            createForm(newFormData);
+        }
+        else {
+            if(!selectedLegislators.length) {
+                setErrorMessage('Please select legislators!');
+                return;
+            }
+
+            if(!formName) {
+                setErrorMessage('Please add a form name!');
+                return;
+            }
+        }
     }
 
 
@@ -37,8 +62,10 @@ export default function CreateFormForm({ legislators }) {
                 <SelectLegislators legislators={legislators} updateSelectedLegislators={updateSelectedLegislators}/>
             </div>
 
-
             <div className='w-[30%] text-gray-600 flex flex-col gap-6 mt-13'>
+                {errorMessage &&
+                    <p className='text-left font-bold text-red-500 py-2'>{errorMessage}</p>
+                }
                 <div className="flex flex-col-reverse items-start">
                     <input
                         id="formName"
@@ -108,11 +135,10 @@ export default function CreateFormForm({ legislators }) {
                     </label>
                 </div>
 
-
                 {/* submit button */}
                 <div className='text-left font-black text-base'>
                     <button 
-                        onClick={() => handleGenerateForm()}
+                        onClick={handleGenerateForm}
                         className="p-3 mt-3 cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green"   
                     >
                         GENERATE FORM

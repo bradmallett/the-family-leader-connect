@@ -20,7 +20,6 @@ export default async function manageLegislators() {
   return (
     <div className='max-w-[1800px] mx-auto font-inter'>
         <HeaderAdmin user={data.user}/>
-        <h1 className='text-center text-gray-600 text-3xl font-black my-12'>MANAGE LEGISLATORS</h1>
         <AddLegislatorPopup />
         <AllLegislators />
     </div>
