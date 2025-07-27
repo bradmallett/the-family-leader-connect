@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import HeaderAdmin from '@/app/components/HeaderAdmin';
-import AllForms from '../components/allForms/allForms';
+import AllForms from '../components/allForms/AllForms';
 
 export default async function allForms() {
   // create client for every protected page
