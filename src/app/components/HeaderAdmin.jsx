@@ -61,13 +61,13 @@ export default function HeaderAdmin( { user } ) {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/manage-legislators" className={clsx(pathName === '/manage-legislators' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
-                                MANAGE LEGISLATORS
+                            <Link href="/create-new-form" className={clsx(pathName === '/create-new-form' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
+                                CREATE NEW FORM
                             </Link>
                         </li>
                         <li>
-                            <Link href="/create-new-form" className={clsx(pathName === '/create-new-form' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
-                                CREATE NEW FORM
+                            <Link href="/manage-legislators" className={clsx(pathName === '/manage-legislators' ? 'font-bold text-tfl-green' : 'hover:text-tfl-green')}>
+                                MANAGE LEGISLATORS
                             </Link>
                         </li>
                     </ul>
