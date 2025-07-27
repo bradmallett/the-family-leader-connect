@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
-import SelectAllDistrict from "./SelectAllDistrict";
-import SelectAllCounty from "./SelectAllCounty";
-import SelectAllParty from "./SelectAllParty";
-import SelectAllChamber from "./SelectAllChamber";
-import filterLegislators from "./filterLegislators";
+import SelectAllDistrict from "../createForm/SelectAllDistrict";
+import SelectAllCounty from "../createForm/SelectAllCounty";
+import SelectAllParty from "../createForm/SelectAllParty";
+import SelectAllChamber from "../createForm/SelectAllChamber";
+import filterLegislators from "../createForm/filterLegislators";
 
 
-export default function SelectLegislators({ legislators, updateSelectedLegislators }) {
-    const [selectedLegislators, setSelectedLegislators] = useState([]);
+export default function EditSelectLegislators({ legislators, updateSelectedLegislators, selectedLegislatorIDs }) {
+    const [selectedLegislators, setSelectedLegislators] = useState(() => setDefaultSelectedLegislators());
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     const [selectedCounties, setSelectedCounties] = useState([]);
     const [selectedParties, setSelectedParties] = useState([]);
     const [selectedChambers, setSelectedChambers] = useState([]);
-    const [countOfSelectedLegislators, setCountOfSelectedLegislators] = useState(0);
+    const [countOfSelectedLegislators, setCountOfSelectedLegislators] = useState(selectedLegislatorIDs.length);
     const [selectionString, setSelectionString] = useState('');
 
 
+    // First way to update the selected legislators - via the filtering buttons
     useEffect(() => {
         if (selectedDistricts.length || selectedCounties.length || selectedParties.length || selectedChambers.length) {
             const { filtered, string } = filterLegislators(legislators, selectedDistricts, selectedCounties, selectedParties, selectedChambers)
@@ -37,6 +38,12 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
     if (!legislators || legislators.length === 0) return <div>No legislators found.</div>;
 
 
+
+    function setDefaultSelectedLegislators() {
+        return legislators.filter(leg => selectedLegislatorIDs.some((selected) => selected.legislator_id === leg.ID));
+    }
+
+
     function selectAllFromDistrict(district) {
         setSelectedDistricts((prev) => [...new Set([...prev, district])]);
     }
@@ -54,6 +61,7 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
     }
 
 
+    // 2nd way to update the selected legislators - manually via checkboxes
     function handleCheckboxChange(leg, checked) {
         setSelectedLegislators((prev) => {
             if (checked) {
@@ -64,6 +72,7 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
         });
     }
 
+    // 3rd way to update the selected legislators - select all checkbox
     function handleSelectAllChange(checked) {
         if (checked) {
             setSelectedLegislators([...new Set([...legislators])]);
@@ -93,7 +102,6 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
                 <p className="text-center font-bold text-tfl-green py-2 text-sm bg-paperSwatch">SELECT LEGISLATORS</p>
             }
             
-
             {/* Fixed table head */}
             <div className="pr-[11px]">
                 <table className="w-full table-fixed border-collapse text-center">

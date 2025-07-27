@@ -1,15 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import SelectLegislators from './SelectLegislators'
-import { createForm } from '@/app/actions/forms/createForm';
+import EditSelectLegislators from './EditSelectLegislators'
+import { editForm } from '@/app/actions/forms/editform';
 
-export default function CreateFormForm({ legislators }) {
-    const [selectedLegislators, setSelectedLegislators] = useState([])
-    const [formName, setFormName] = useState('');
-    const [constituentDirection, setConstituentDirection] = useState('');
-    const [emailBody, setEmailBody] = useState('');
-    const [successMessage, setSuccessMessage] = useState('Your message has been emailed to your local legislators. You can close this window.');
+
+export default function EditFormForm({ formData, allLegislators, selectedLegislatorIDs }) {
+    const [selectedLegislators, setSelectedLegislators] = useState([]);
+    const [formName, setFormName] = useState(formData.form_name || '');
+    const [constituentDirection, setConstituentDirection] = useState(formData.constituent_direction || '');
+    const [emailBody, setEmailBody] = useState(formData.constituent_email_prompt || '');
+    const [successMessage, setSuccessMessage] = useState(formData.successMessage || 'Your message has been emailed to your local legislators. You can close this window.');
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
@@ -22,11 +23,12 @@ export default function CreateFormForm({ legislators }) {
         }
     }
     , [selectedLegislators, formName]);
-
+    
 
     function handleGenerateForm() {
         if(selectedLegislators.length && formName) {
             const newFormData = {
+                IDofForm: formData.id,
                 formName: formName.trim(),
                 constituentDirection: constituentDirection.trim(),
                 emailBody: emailBody.trim(),
@@ -34,7 +36,7 @@ export default function CreateFormForm({ legislators }) {
                 selectedLegislatorIDs: selectedLegislators.map(leg => leg.ID)
             }
     
-            createForm(newFormData);
+            editForm(newFormData);
         }
         else {
             if(!selectedLegislators.length) {
@@ -59,7 +61,11 @@ export default function CreateFormForm({ legislators }) {
         <div className='max-w-11/12 flex mx-auto justify-center gap-10 mt-15 mb-5'>
 
             <div className='w-[60%]'>
-                <SelectLegislators legislators={legislators} updateSelectedLegislators={updateSelectedLegislators}/>
+                <EditSelectLegislators 
+                    legislators={allLegislators} 
+                    updateSelectedLegislators={updateSelectedLegislators} 
+                    selectedLegislatorIDs={selectedLegislatorIDs}
+                />
             </div>
 
             <div className='w-[30%] text-gray-600 flex flex-col gap-6'>
@@ -141,7 +147,7 @@ export default function CreateFormForm({ legislators }) {
                         onClick={handleGenerateForm}
                         className="p-3 mt-3 cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green"   
                     >
-                        GENERATE FORM
+                        SAVE FORM
                     </button>
                 </div>
             </div>
