@@ -116,7 +116,7 @@ export default function EditSelectLegislators({ legislators, updateSelectedLegis
             {/* Fixed table head */}
             <div className="pr-[11px]">
                 <table className="w-full table-fixed border-collapse text-center">
-                    <thead className="text-sm uppercase border-b-2 bg-paperSwatch z-10">
+                    <thead className="text-sm text-gray-600 uppercase bg-paperSwatch z-10">
                         <tr>
                             <th className="p-2">
                                 <div className="flex flex-col">
@@ -158,8 +158,8 @@ export default function EditSelectLegislators({ legislators, updateSelectedLegis
             </div>
 
             {/* Scrollable table body */}
-            <div className="overflow-y-auto max-h-[calc(100vh-400px)]">
-                <table className="w-full table-fixed text-xs text-center">
+            <div className="overflow-y-auto max-h-[calc(100vh-400px)] border-tfl-green border-t-3 border-b-3">
+                <table className="w-full text-gray-600 table-fixed text-xs text-center ">
                     <tbody>
                         {legislators.map((leg, i) => (
                             <tr key={i} className="border-b border-gray-400">
