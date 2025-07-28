@@ -4,15 +4,26 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-
-export async function createForm({ formName, constituentDirection, emailBody, successMessage, selectedLegislatorIDs, selectionString}) {
+// need to update to edit - not just create
+export async function editForm({ IDofForm, formName, constituentDirection, emailBody, successMessage, selectedLegislatorIDs, selectionString}) {
     const supabase = await createClient();
 
-    const formData = await insertForm();
-    const formID = formData[0].id;
-    const groupData = await insertGroup(formID);
-    const groupID = groupData[0].id;
+    await updateForm();
+    const groupID = await getGroupId();
+    await removeGroupedLegislators(groupID);
     await insertGroupedLegislators(groupID);
+
+    async function removeGroupedLegislators(groupID) {
+        const { error } = await supabase
+            .from('legislators_group_instances')
+            .delete()
+            .eq('group_id', groupID)
+
+            if (error) {
+                console.error("Error removing legislators_group_instances table from: ", error);
+            redirect('/error')
+        }
+    }
 
 
     async function insertGroupedLegislators(groupID) {
@@ -28,7 +39,7 @@ export async function createForm({ formName, constituentDirection, emailBody, su
             .insert(groupedInstances)
 
         if (error) {
-            console.error("Error inserting into legislators_group_instances table: ", error);
+                console.error("Error inserting into legislators_group_instances table: ", error);
             redirect('/error')
         }
 
@@ -37,43 +48,39 @@ export async function createForm({ formName, constituentDirection, emailBody, su
     }
 
 
-
-
-    async function insertGroup(id) {
+    async function getGroupId() {
         const { data, error } = await supabase
             .from('groups')
-            .insert({
-                form_id: id,
-            })
             .select('id')
-
+            .eq('form_id', IDofForm)
+            
         if (error) {
-            console.error("Error inserting into groups table: ", error);
+            console.error("Error fetching group id from groups table: ", error);
             redirect('/error')
         }
 
-        return data;
+        return data[0].id;
     }
 
 
 
-    async function insertForm() {
-        const { data, error } = await supabase
+    async function updateForm() {
+        const { error } = await supabase
             .from('forms')
-            .insert({
+            .update({
                 form_name: formName,
                 constituent_direction: constituentDirection,
                 constituent_email_prompt: emailBody,
                 success_message: successMessage,
                 selection_string: selectionString
             })
-            .select('id')
+            .eq('id', IDofForm)
 
         if (error) {
-            console.error("Error inserting into forms table: ", error);
+            console.error("Error updating form in forms table: ", error);
             redirect('/error')
         }
-
-        return data;
     }
 }
+
+

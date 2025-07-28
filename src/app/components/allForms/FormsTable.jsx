@@ -5,7 +5,7 @@ import { PencilIcon, ShareIcon, PlusCircleIcon } from "@heroicons/react/24/outli
 
 
 export default function FormsTable({ allForms }) {
-    if (!allForms || !allForms.length) return <div>No legislators found.</div>;
+    if (!allForms || !allForms.length) return <div>No forms found.</div>;
 
 
     return (
@@ -15,7 +15,7 @@ export default function FormsTable({ allForms }) {
             {/* Fixed table head */}
             <div className="pr-[11px]">
                 <table className="w-full table-fixed border-collapse text-center">
-                    <thead className="text-sm uppercase border-gray-600 border-b-2 bg-paperSwatch z-10 text-gray-600">
+                    <thead className="text-sm uppercase bg-paperSwatch z-10 text-gray-600">
                         <tr>
                             <th className="p-2">
                                 FORM NAME
@@ -37,7 +37,7 @@ export default function FormsTable({ allForms }) {
             </div>
 
             {/* Scrollable table body */}
-            <div className="overflow-y-auto max-h-[calc(100vh-400px)]">
+            <div className="overflow-y-auto max-h-[calc(100vh-400px)] border-tfl-green border-t-3 border-b-3">
                 <table className="w-full table-fixed text-xs text-center text-gray-600">
                     <tbody>
                         {allForms.map((form, i) => (

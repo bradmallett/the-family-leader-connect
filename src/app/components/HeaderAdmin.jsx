@@ -39,6 +39,10 @@ export default function HeaderAdmin( { user } ) {
         if(pathName === '/create-new-form') {
             return 'CREATE NEW FORM';
         }
+
+        if (pathName.startsWith('/edit-form/')) {
+            return 'EDIT FORM';
+        }
     }
 
 

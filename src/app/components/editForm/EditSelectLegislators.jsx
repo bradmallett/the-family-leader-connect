@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
-import SelectAllDistrict from "./SelectAllDistrict";
-import SelectAllCounty from "./SelectAllCounty";
-import SelectAllParty from "./SelectAllParty";
-import SelectAllChamber from "./SelectAllChamber";
-import filterLegislators from "./filterLegislators";
+import SelectAllDistrict from "../createForm/SelectAllDistrict";
+import SelectAllCounty from "../createForm/SelectAllCounty";
+import SelectAllParty from "../createForm/SelectAllParty";
+import SelectAllChamber from "../createForm/SelectAllChamber";
+import filterLegislators from "../createForm/filterLegislators";
 
 
-export default function SelectLegislators({ legislators, updateSelectedLegislators, updateSelectionString }) {
-    const [selectedLegislators, setSelectedLegislators] = useState([]);
+export default function EditSelectLegislators({ legislators, updateSelectedLegislators, selectedLegislatorIDs, updateSelectionString, previousSelectionString }) {
+    const [selectedLegislators, setSelectedLegislators] = useState(() => setDefaultSelectedLegislators());
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     const [selectedCounties, setSelectedCounties] = useState([]);
     const [selectedParties, setSelectedParties] = useState([]);
     const [selectedChambers, setSelectedChambers] = useState([]);
-    const [countOfSelectedLegislators, setCountOfSelectedLegislators] = useState(0);
-    const [selectionString, setSelectionString] = useState('');
+    const [countOfSelectedLegislators, setCountOfSelectedLegislators] = useState(selectedLegislatorIDs.length);
+    const [selectionString, setSelectionString] = useState(previousSelectionString || '');
 
 
+    // First way to update the selected legislators - via the filtering buttons
     useEffect(() => {
         if (selectedDistricts.length || selectedCounties.length || selectedParties.length || selectedChambers.length) {
             const { filtered, string } = filterLegislators(legislators, selectedDistricts, selectedCounties, selectedParties, selectedChambers)
@@ -27,6 +28,7 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
     } ,[selectedDistricts, selectedCounties, selectedParties, selectedChambers, legislators]);
 
 
+    // when the selectedLegislators state changes, update the count and send the state to the parent component
     useEffect(() => {
         setCountOfSelectedLegislators(selectedLegislators.length)
         updateSelectedLegislators(selectedLegislators)
@@ -39,6 +41,12 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
 
 
     if (!legislators || legislators.length === 0) return <div>No legislators found.</div>;
+
+
+
+    function setDefaultSelectedLegislators() {
+        return legislators.filter(leg => selectedLegislatorIDs.some((selected) => selected.legislator_id === leg.ID));
+    }
 
 
     function selectAllFromDistrict(district) {
@@ -58,6 +66,7 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
     }
 
 
+    // 2nd way to update the selected legislators - manually via checkboxes
     function handleCheckboxChange(leg, checked) {
         setSelectedLegislators((prev) => {
             if (checked) {
@@ -68,6 +77,7 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
         });
     }
 
+    // 3rd way to update the selected legislators - select all checkbox
     function handleSelectAllChange(checked) {
         if (checked) {
             setSelectedLegislators([...new Set([...legislators])]);
@@ -89,7 +99,13 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
 
 
     return (
-        <div className="max-h-[calc(100vh-160px)] w-full max-w-[1500px] mx-auto">
+        <div className="max-h-[calc(100vh-160px)] w-full max-w-[1500px] mx-auto relative">
+            {(previousSelectionString.length && previousSelectionString !== selectionString) ?
+                <p className="text-center font-medium text-gray-600 py-1 text-xs absolute -top-6">Previous Filters: {previousSelectionString}</p> : 
+                <p className=""></p>
+            }
+
+
             <p className="text-center font-bold text-paperSwatch p-2 bg-tfl-green">{countOfSelectedLegislators} LEGISLATORS SELECTED</p>
 
             {selectionString.length ?
@@ -97,11 +113,10 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
                 <p className="text-center font-bold text-tfl-green py-2 text-sm bg-paperSwatch">SELECT LEGISLATORS</p>
             }
             
-
             {/* Fixed table head */}
             <div className="pr-[11px]">
                 <table className="w-full table-fixed border-collapse text-center">
-                    <thead className="text-sm uppercase text-gray-600 bg-paperSwatch z-10">
+                    <thead className="text-sm text-gray-600 uppercase bg-paperSwatch z-10">
                         <tr>
                             <th className="p-2">
                                 <div className="flex flex-col">
@@ -144,7 +159,7 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
 
             {/* Scrollable table body */}
             <div className="overflow-y-auto max-h-[calc(100vh-400px)] border-tfl-green border-t-3 border-b-3">
-                <table className="w-full table-fixed text-xs text-gray-600 text-center">
+                <table className="w-full text-gray-600 table-fixed text-xs text-center ">
                     <tbody>
                         {legislators.map((leg, i) => (
                             <tr key={i} className="border-b border-gray-400">
