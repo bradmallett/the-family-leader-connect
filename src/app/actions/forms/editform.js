@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 // need to update to edit - not just create
-export async function editForm({ IDofForm, formName, constituentDirection, emailBody, successMessage, selectedLegislatorIDs}) {
+export async function editForm({ IDofForm, formName, constituentDirection, emailBody, successMessage, selectedLegislatorIDs, selectionString}) {
     const supabase = await createClient();
 
     await updateForm();
@@ -71,7 +71,8 @@ export async function editForm({ IDofForm, formName, constituentDirection, email
                 form_name: formName,
                 constituent_direction: constituentDirection,
                 constituent_email_prompt: emailBody,
-                success_message: successMessage
+                success_message: successMessage,
+                selection_string: selectionString
             })
             .eq('id', IDofForm)
 

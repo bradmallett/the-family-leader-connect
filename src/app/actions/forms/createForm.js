@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 
-export async function createForm({ formName, constituentDirection, emailBody, successMessage, selectedLegislatorIDs}) {
+export async function createForm({ formName, constituentDirection, emailBody, successMessage, selectedLegislatorIDs, selectionString}) {
     const supabase = await createClient();
 
     const formData = await insertForm();
@@ -64,7 +64,8 @@ export async function createForm({ formName, constituentDirection, emailBody, su
                 form_name: formName,
                 constituent_direction: constituentDirection,
                 constituent_email_prompt: emailBody,
-                success_message: successMessage
+                success_message: successMessage,
+                selection_string: selectionString
             })
             .select('id')
 

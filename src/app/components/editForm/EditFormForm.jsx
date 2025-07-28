@@ -12,6 +12,7 @@ export default function EditFormForm({ formData, allLegislators, selectedLegisla
     const [emailBody, setEmailBody] = useState(formData.constituent_email_prompt || '');
     const [successMessage, setSuccessMessage] = useState(formData.successMessage || 'Your message has been emailed to your local legislators. You can close this window.');
     const [errorMessage, setErrorMessage] = useState('');
+    const [selectionString, setSelectionString] = useState('');
 
     useEffect(() => {
         if(selectedLegislators.length) {
@@ -33,7 +34,8 @@ export default function EditFormForm({ formData, allLegislators, selectedLegisla
                 constituentDirection: constituentDirection.trim(),
                 emailBody: emailBody.trim(),
                 successMessage: successMessage.trim(),
-                selectedLegislatorIDs: selectedLegislators.map(leg => leg.ID)
+                selectedLegislatorIDs: selectedLegislators.map(leg => leg.ID),
+                selectionString: selectionString.trim()
             }
     
             editForm(newFormData);
@@ -56,6 +58,10 @@ export default function EditFormForm({ formData, allLegislators, selectedLegisla
         setSelectedLegislators(legislators);
     }
 
+    function updateSelectionString(str) {
+        setSelectionString(str);
+    }
+
 
     return (
         <div className='max-w-11/12 flex mx-auto justify-center gap-10 mt-15 mb-5'>
@@ -65,6 +71,8 @@ export default function EditFormForm({ formData, allLegislators, selectedLegisla
                     legislators={allLegislators} 
                     updateSelectedLegislators={updateSelectedLegislators} 
                     selectedLegislatorIDs={selectedLegislatorIDs}
+                    updateSelectionString={updateSelectionString}
+                    previousSelectionString={formData.selection_string}
                 />
             </div>
 

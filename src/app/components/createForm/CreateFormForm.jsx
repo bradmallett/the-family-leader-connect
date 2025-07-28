@@ -11,6 +11,7 @@ export default function CreateFormForm({ legislators }) {
     const [emailBody, setEmailBody] = useState('');
     const [successMessage, setSuccessMessage] = useState('Your message has been emailed to your local legislators. You can close this window.');
     const [errorMessage, setErrorMessage] = useState('');
+    const [selectionString, setSelectionString] = useState('');
 
     useEffect(() => {
         if(selectedLegislators.length) {
@@ -31,7 +32,8 @@ export default function CreateFormForm({ legislators }) {
                 constituentDirection: constituentDirection.trim(),
                 emailBody: emailBody.trim(),
                 successMessage: successMessage.trim(),
-                selectedLegislatorIDs: selectedLegislators.map(leg => leg.ID)
+                selectedLegislatorIDs: selectedLegislators.map(leg => leg.ID),
+                selectionString: selectionString.trim()
             }
     
             createForm(newFormData);
@@ -54,12 +56,17 @@ export default function CreateFormForm({ legislators }) {
         setSelectedLegislators(legislators);
     }
 
+    function updateSelectionString(str) {
+        setSelectionString(str);
+    }
+
+
 
     return (
         <div className='max-w-11/12 flex mx-auto justify-center gap-10 mt-15 mb-5'>
 
             <div className='w-[60%]'>
-                <SelectLegislators legislators={legislators} updateSelectedLegislators={updateSelectedLegislators}/>
+                <SelectLegislators legislators={legislators} updateSelectedLegislators={updateSelectedLegislators} updateSelectionString={updateSelectionString}/>
             </div>
 
             <div className='w-[30%] text-gray-600 flex flex-col gap-6'>

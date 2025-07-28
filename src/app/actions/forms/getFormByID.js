@@ -13,7 +13,8 @@ export async function getFormByID(formID) {
             created_at,
             constituent_direction,
             constituent_email_prompt,
-            success_message
+            success_message,
+            selection_string
         `
     )
     .eq('id', formID);

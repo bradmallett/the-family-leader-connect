@@ -5,7 +5,7 @@ import { PencilIcon, ShareIcon, PlusCircleIcon } from "@heroicons/react/24/outli
 
 
 export default function FormsTable({ allForms }) {
-    if (!allForms || !allForms.length) return <div>No legislators found.</div>;
+    if (!allForms || !allForms.length) return <div>No forms found.</div>;
 
 
     return (

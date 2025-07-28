@@ -6,7 +6,7 @@ import SelectAllChamber from "./SelectAllChamber";
 import filterLegislators from "./filterLegislators";
 
 
-export default function SelectLegislators({ legislators, updateSelectedLegislators }) {
+export default function SelectLegislators({ legislators, updateSelectedLegislators, updateSelectionString }) {
     const [selectedLegislators, setSelectedLegislators] = useState([]);
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     const [selectedCounties, setSelectedCounties] = useState([]);
@@ -27,11 +27,15 @@ export default function SelectLegislators({ legislators, updateSelectedLegislato
     } ,[selectedDistricts, selectedCounties, selectedParties, selectedChambers, legislators]);
 
 
-
     useEffect(() => {
         setCountOfSelectedLegislators(selectedLegislators.length)
         updateSelectedLegislators(selectedLegislators)
     } ,[selectedLegislators]);
+
+
+    useEffect(() => {
+        updateSelectionString(selectionString)
+    } ,[selectionString]);
 
 
     if (!legislators || legislators.length === 0) return <div>No legislators found.</div>;

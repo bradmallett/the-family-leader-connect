@@ -6,14 +6,14 @@ import SelectAllChamber from "../createForm/SelectAllChamber";
 import filterLegislators from "../createForm/filterLegislators";
 
 
-export default function EditSelectLegislators({ legislators, updateSelectedLegislators, selectedLegislatorIDs }) {
+export default function EditSelectLegislators({ legislators, updateSelectedLegislators, selectedLegislatorIDs, updateSelectionString, previousSelectionString }) {
     const [selectedLegislators, setSelectedLegislators] = useState(() => setDefaultSelectedLegislators());
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     const [selectedCounties, setSelectedCounties] = useState([]);
     const [selectedParties, setSelectedParties] = useState([]);
     const [selectedChambers, setSelectedChambers] = useState([]);
     const [countOfSelectedLegislators, setCountOfSelectedLegislators] = useState(selectedLegislatorIDs.length);
-    const [selectionString, setSelectionString] = useState('');
+    const [selectionString, setSelectionString] = useState(previousSelectionString || '');
 
 
     // First way to update the selected legislators - via the filtering buttons
@@ -28,11 +28,16 @@ export default function EditSelectLegislators({ legislators, updateSelectedLegis
     } ,[selectedDistricts, selectedCounties, selectedParties, selectedChambers, legislators]);
 
 
-
+    // when the selectedLegislators state changes, update the count and send the state to the parent component
     useEffect(() => {
         setCountOfSelectedLegislators(selectedLegislators.length)
         updateSelectedLegislators(selectedLegislators)
     } ,[selectedLegislators]);
+
+
+    useEffect(() => {
+        updateSelectionString(selectionString)
+    } ,[selectionString]);
 
 
     if (!legislators || legislators.length === 0) return <div>No legislators found.</div>;
@@ -94,7 +99,13 @@ export default function EditSelectLegislators({ legislators, updateSelectedLegis
 
 
     return (
-        <div className="max-h-[calc(100vh-160px)] w-full max-w-[1500px] mx-auto">
+        <div className="max-h-[calc(100vh-160px)] w-full max-w-[1500px] mx-auto relative">
+            {(previousSelectionString.length && previousSelectionString !== selectionString) ?
+                <p className="text-center font-medium text-gray-600 py-1 text-xs absolute -top-6">Previous Filters: {previousSelectionString}</p> : 
+                <p className=""></p>
+            }
+
+
             <p className="text-center font-bold text-paperSwatch p-2 bg-tfl-green">{countOfSelectedLegislators} LEGISLATORS SELECTED</p>
 
             {selectionString.length ?
