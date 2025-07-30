@@ -2,6 +2,7 @@
 import Image from "next/image";
 
 export default function HeaderConnect() {
+    
     return (
         <header>
             <div className="m-3 flex gap-2">

@@ -1,5 +1,6 @@
 import { getFormByID } from "@/app/actions/forms/getFormByID"
 import HeaderConnect from "@/app/components/HeaderConnect";
+import ConstituentFormForm from "@/app/components/constituentForm/ConstituentFormForm";
 
 export default async function Page({ params }) {
     const { formID } = await params;
@@ -9,10 +10,12 @@ export default async function Page({ params }) {
     return (
         <div>
             <HeaderConnect />
-            <h1>{formData.form_name}</h1>
-            <h2>Form ID: {formData.id}</h2>
-            <p>{formData.constituent_direction}</p>
-            <p>{formData.constituent_email_prompt}</p>
+            <div className="text-center text-gray-600">
+                <h1 className="font-black text-2xl">CONNECT WITH LEGISLATORS</h1>
+                <p className="mt-1 font-light text-sm">Fill out the form and send a message to Iowa state legislators.</p>
+            </div>
+
+            <ConstituentFormForm formData={formData} />
         </div>
     );
 };
