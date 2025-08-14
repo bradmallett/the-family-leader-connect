@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { formatPhoneNumber, isValidEmail, isValidPhone } from './constituentUtils';
+import SelectState from './SelectState';
 // import SelectLegislators from './SelectLegislators';
 // import { createForm } from '@/app/actions/forms/createForm';
 
@@ -16,7 +17,9 @@ export default function ConstituentFormForm({ formData }) {
     const [state, setState] = useState('IOWA');
     const [zip, setZip] = useState('');
 
-
+    function updateSelectedState(selectedState) {
+        setState(selectedState);
+    }
 
     function handleSendMessage() {
         if (!firstName || !lastName || !email || !address || !city || !zip) {
@@ -171,7 +174,7 @@ export default function ConstituentFormForm({ formData }) {
 
 
                     {/* Need to finish the SelectState component */}
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    {/* <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
                         <input 
                             type="text"
                             id="state"
@@ -183,7 +186,10 @@ export default function ConstituentFormForm({ formData }) {
                             htmlFor="state"
                             className="text-xs font-medium peer-focus:text-tfl-green"
                         >STATE</label>
-                    </div>
+                    </div> */}
+
+
+                    <SelectState updateSelectedState={updateSelectedState}/>
 
 
                     <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">

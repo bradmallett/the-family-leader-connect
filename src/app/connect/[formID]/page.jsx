@@ -12,7 +12,7 @@ export default async function Page({ params }) {
             <HeaderConnect />
             <div className="text-center text-gray-600">
                 <h1 className="font-black text-2xl">CONNECT WITH LEGISLATORS</h1>
-                <p className="mt-1 font-light text-sm">Fill out the form and send a message to Iowa state legislators.</p>
+                <p className="mt-1 font-light text-sm">Enter your information to send a message to Iowa state legislators.</p>
             </div>
 
             <ConstituentFormForm formData={formData} />
