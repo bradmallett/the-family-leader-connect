@@ -6,6 +6,7 @@ export default async function Page({ params }) {
     const { formID } = await params;
 
     const formData = await getFormByID(formID);
+    console.log(formData)
 
     return (
         <div>
@@ -16,6 +17,8 @@ export default async function Page({ params }) {
             </div>
 
             <ConstituentFormForm formData={formData} />
+
+            
         </div>
     );
 };

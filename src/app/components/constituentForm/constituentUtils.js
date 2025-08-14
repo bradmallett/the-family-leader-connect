@@ -16,3 +16,6 @@ export function isValidPhone(phoneInput) {
     return /^\(\d{3}\) \d{3}-\d{4}$/.test(phoneInput);
 }
 
+export function isValidZip(zipInput) {
+  return /^\d{5}(-\d{4})?$/.test(zipInput);
+}
