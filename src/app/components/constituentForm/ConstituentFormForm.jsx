@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { formatPhoneNumber, isValidEmail, isValidPhone, isValidZip } from './constituentUtils';
 import SelectState from './SelectState';
-// import SelectLegislators from './SelectLegislators';
-// import { createForm } from '@/app/actions/forms/createForm';
+
 
 export default function ConstituentFormForm({ formData }) {
     const [firstName, setFirstName] = useState('');
@@ -17,7 +16,8 @@ export default function ConstituentFormForm({ formData }) {
     const [state, setState] = useState('IOWA');
     const [zip, setZip] = useState('');
     const [formError, setFormError] = useState('');
-    const [emailPrompt, setEmailPrompt] = useState(formData.constituent_email_prompt || '');
+    const [emailBodyError, setEmailBodyError] = useState('');
+    const [emailBody, setEmailBody] = useState(formData.constituent_email_prompt || '');
 
     function updateSelectedState(selectedState) {
         setState(selectedState);
@@ -44,29 +44,27 @@ export default function ConstituentFormForm({ formData }) {
             return;
         }
 
-        // Here you would typically send the form data to your server
-        console.log({
-            firstName,
-            lastName,
-            email,
-            phone,
-            address,
-            addressTwo,
-            city,
-            state,
-            zip
-        });
+        if (!emailBody) {
+            setEmailBodyError('Please type your message in order to send.');
+            return;
+        }
 
-        // Reset form fields after submission
-        // setFirstName('');
-        // setLastName('');
-        // setEmail('');
-        // setPhone('');
-        // setAddress('');
-        // setAddressTwo('');
-        // setCity('');
-        // setState('IOWA');
-        // setZip('');
+        const constituentSubmissionData = {
+            constituentFirstName: firstName.trim(),
+            constituentLastName: lastName.trim(),
+            constituentEmail: email.trim(),
+            constituentPhone: phone.trim(),
+            constituentAddress: address.trim(),
+            constituentAddressTwo: addressTwo.trim(),
+            constituentCity: city.trim(),
+            constituentState: state,
+            constituentZip: zip.trim(),
+            constituentEmailBody: emailBody.trim(),
+            formID: formData.id
+        }
+
+        // Here you would typically send the form data to your server
+       console.log(constituentSubmissionData);
     }
 
     return (
@@ -136,10 +134,8 @@ export default function ConstituentFormForm({ formData }) {
                     </div>
                 </div>
 
-
                 {/* div holding 2nd group of form fields */}
                 <div className='w-full mt-10 flex flex-wrap gap-5'>
-
                     <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
                         <input 
                             type="text"
@@ -153,7 +149,6 @@ export default function ConstituentFormForm({ formData }) {
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >ADDRESS<span className='text-red-600'>*</span></label>
                     </div>
-
                     <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
                         <input 
                             type="text"
@@ -167,7 +162,6 @@ export default function ConstituentFormForm({ formData }) {
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >ADDRESS 2</label>
                     </div>
-
                     <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
                         <input 
                             type="text"
@@ -182,11 +176,7 @@ export default function ConstituentFormForm({ formData }) {
                         >CITY<span className='text-red-600'>*</span></label>
                     </div>
 
-
-
-
                     <SelectState updateSelectedState={updateSelectedState}/>
-
 
                     <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
                         <input 
@@ -201,31 +191,32 @@ export default function ConstituentFormForm({ formData }) {
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >ZIP CODE<span className='text-red-600'>*</span></label>
                     </div>
-
-
                 </div>
-
-
-
-            
-
             </div>
+
             <div className='w-[45%]'>
                 <h2 className='border-b-2 border-tfl-green font-bold text-lg text-tfl-green'>EMAIL BODY</h2>
                 <h3 className='font-light text-sm'>CUSTOMIZE YOUR MESSAGE TO THE LEGISLATORS</h3>
                 { formData.constituent_direction &&
                     <p className='mt-5 text-sm font-medium'>{formData.constituent_direction}</p>
                 }
-                <h3 className='mt-5 font-bold text-sm text-tfl-green'>Please enter your message below.</h3>
+                {emailBodyError ? 
+                    <h3 className='mt-5 font-bold text-base text-red-600'>{emailBodyError}</h3> :
+                    <h3 className='mt-5 font-bold text-sm text-tfl-green'>Please enter your message below.</h3>
+                }
+                
                 <textarea
-                    value={emailPrompt}
+                    value={emailBody}
                     maxLength={2000}
-                    onChange={(e) => setEmailPrompt(e.target.value)}
+                    onChange={(e) => {
+                        setEmailBody(e.target.value)
+                        setEmailBodyError('')
+                    }}
                     rows="14"
                     className='w-full p-2 outline-none border-2 border-gray-600 font-medium focus:border-tfl-green text-sm text-black'
                 />
                 <p className="text-xs text-gray-500 text-right">
-                    {emailPrompt.length}/{2000} characters
+                    {emailBody.length}/{2000} characters
                 </p>
 
                 <button

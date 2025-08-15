@@ -6,18 +6,14 @@ export default async function Page({ params }) {
     const { formID } = await params;
 
     const formData = await getFormByID(formID);
-    console.log(formData)
 
     return (
         <div>
-            <HeaderConnect />
+            <HeaderConnect/>
             <div className="text-center text-gray-600">
-                <h1 className="font-black text-2xl">CONNECT WITH LEGISLATORS</h1>
-                <p className="mt-1 font-light text-sm">Enter your information to send a message to Iowa state legislators.</p>
+                <h1 className="font-black text-2xl">{formData.form_name}</h1>
             </div>
-
             <ConstituentFormForm formData={formData} />
-
             
         </div>
     );
