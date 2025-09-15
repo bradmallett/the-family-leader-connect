@@ -68,8 +68,9 @@ export default function ConstituentFormForm({ formData }) {
     }
 
     return (
-        <div className='max-w-11/12 flex mx-auto justify-center mt-15 gap-20 mb-5 text-gray-600'>
-            <div className='w-[45%] max-w-[800px]'>
+        <div className='w-11/12 max-w-[1750px] flex-col md:flex-row flex mx-auto justify-center mt-15 gap-20 mb-5 text-gray-600'>
+
+            <div className='w-[90%] md:w-[45%] max-w-[800px] mx-auto'>
                 <h2 className='border-b-2 border-tfl-green font-bold text-lg text-tfl-green'>CONSTITUENT</h2>
                 <h3 className='font-light text-sm'>PLEASE ENTER YOUR INFORMATION</h3>
                 <p className='text-xs text-red-600'>*required</p>
@@ -79,53 +80,53 @@ export default function ConstituentFormForm({ formData }) {
 
                 {/* div holding first group of form fields */}
                 <div className='w-full mt-10 flex flex-wrap gap-5'>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="firstName"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="firstName"
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >FIRST NAME<span className='text-red-600'>*</span></label>
                     </div>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="lastName"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="lastName"
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >LAST NAME<span className='text-red-600'>*</span></label>
                     </div>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input
                             type="email"
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="email"
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >EMAIL<span className='text-red-600'>*</span></label>
                     </div>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="phone"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             onBlur={() => setPhone(formatPhoneNumber(phone))}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="phone"
@@ -135,40 +136,40 @@ export default function ConstituentFormForm({ formData }) {
                 </div>
 
                 {/* div holding 2nd group of form fields */}
-                <div className='w-full mt-10 flex flex-wrap gap-5'>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                <div className='w-full mt-15 flex flex-wrap gap-5'>
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="address"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="firstName"
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >ADDRESS<span className='text-red-600'>*</span></label>
                     </div>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="addressTwo"
                             value={addressTwo}
                             onChange={(e) => setAddressTwo(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="addressTwo"
                             className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green"
                         >ADDRESS 2</label>
                     </div>
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="city"
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="city"
@@ -178,13 +179,13 @@ export default function ConstituentFormForm({ formData }) {
 
                     <SelectState updateSelectedState={updateSelectedState}/>
 
-                    <div className="flex flex-col-reverse w-[45%] min-w-[180px] max-w-[330px]">
+                    <div className="flex flex-col-reverse w-full md:w-[250px]">
                         <input 
                             type="text"
                             id="zip"
                             value={zip}
                             onChange={(e) => setZip(e.target.value)}
-                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green'
+                            className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
                         <label
                             htmlFor="zip"
@@ -194,7 +195,17 @@ export default function ConstituentFormForm({ formData }) {
                 </div>
             </div>
 
-            <div className='w-[45%]'>
+
+
+
+
+
+
+
+
+
+
+            <div className='w-[90%] md:w-[45%] max-w-[800px] mx-auto'>
                 <h2 className='border-b-2 border-tfl-green font-bold text-lg text-tfl-green'>EMAIL BODY</h2>
                 <h3 className='font-light text-sm'>CUSTOMIZE YOUR MESSAGE TO THE LEGISLATORS</h3>
                 { formData.constituent_direction &&
@@ -204,7 +215,6 @@ export default function ConstituentFormForm({ formData }) {
                     <h3 className='mt-5 font-bold text-base text-red-600'>{emailBodyError}</h3> :
                     <h3 className='mt-5 font-bold text-sm text-tfl-green'>Please enter your message below.</h3>
                 }
-                
                 <textarea
                     value={emailBody}
                     maxLength={2000}
@@ -215,16 +225,15 @@ export default function ConstituentFormForm({ formData }) {
                     rows="14"
                     className='w-full p-2 outline-none border-2 border-gray-600 font-medium focus:border-tfl-green text-sm text-black'
                 />
-                <p className="text-xs text-gray-500 text-right">
+                <p className="text-xs text-gray-500 text-left md:text-right">
                     {emailBody.length}/{2000} characters
                 </p>
-
                 <button
                     onClick={handleSendMessage}
-                    className='mt-5 p-4 cursor-pointer text-paperSwatch bg-gray-600 font-black hover:bg-tfl-green'
+                    className='mt-5 p-4 cursor-pointer text-sm md:text-base text-paperSwatch bg-gray-600 font-black hover:bg-tfl-green'
                 >
-                SEND MESSAGE
-            </button>
+                    SEND MESSAGE
+                </button>
             </div>
         </div>
     );

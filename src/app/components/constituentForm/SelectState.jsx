@@ -54,14 +54,14 @@ export default function SelectState({ updateSelectedState }) {
 
 
     return (
-        <div className="relative flex w-[45%] min-w-[180px] max-w-[330px]">
+        <div className="relative flex w-full md:w-[250px]">
             <div className="flex flex-col-reverse w-full">
                 <button
                     ref={triggerRef}
                     className="flex justify-between peer p-2 cursor-pointer outline-none border-2 border-gray-600 font-bold group hover:text-tfl-green hover:border-tfl-green focus:text-tfl-green focus:border-tfl-green"
                     onClick={() => setShowStates(true)}
                 >
-                    <span className="font-medium group-hover:text-tfl-green">{selectedState || 'SELECT STATE'}</span>
+                    <span className="text-xs md:text-sm font-bold group-hover:text-tfl-green">{selectedState || 'SELECT STATE'}</span>
                     <ChevronDownIcon className="h-5 text-gray-600 group-hover:text-tfl-green" />
                 </button>
                 <p className="text-xs font-medium peer-focus:text-tfl-green peer-hover:text-tfl-green">STATE</p>
