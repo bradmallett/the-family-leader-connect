@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { formatPhoneNumber, isValidEmail, isValidPhone, isValidZip } from './constituentUtils';
 import SelectState from './SelectState';
+import { constituentSubmission } from '@/app/actions/constituents/constituentSubmission';
 
 
 export default function ConstituentFormForm({ formData }) {
@@ -52,7 +53,7 @@ export default function ConstituentFormForm({ formData }) {
         const constituentSubmissionData = {
             constituentFirstName: firstName.trim(),
             constituentLastName: lastName.trim(),
-            constituentEmail: email.trim(),
+            constituentEmail: email.trim().toLowerCase(),
             constituentPhone: phone.trim(),
             constituentAddress: address.trim(),
             constituentAddressTwo: addressTwo.trim(),
@@ -63,8 +64,7 @@ export default function ConstituentFormForm({ formData }) {
             formID: formData.id
         }
 
-        // Here you would typically send the form data to your server
-       console.log(constituentSubmissionData);
+       constituentSubmission(constituentSubmissionData);
     }
 
     return (
