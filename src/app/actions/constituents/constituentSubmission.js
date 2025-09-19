@@ -3,29 +3,31 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { sendGridSubmit } from "./sendGridSubmit";
+import normalizeConstituentData from "./normalizeConstituentData";
 
 
 export async function constituentSubmission( constituentSubmissionData ) {
     const supabase = await createClient();
 
-    const normalizedConstituentSubmissionData = {
-        // Normalize inputs
-        constituentFirstName: constituentSubmissionData?.constituentFirstName?.trim(),
-        constituentLastName: constituentSubmissionData?.constituentLastName?.trim(),
-        constituentEmail: constituentSubmissionData?.constituentEmail?.trim().toLowerCase(),
-        constituentPhone: constituentSubmissionData?.constituentPhone?.trim(),
-        constituentAddress: constituentSubmissionData?.constituentAddress?.trim(),
-        constituentAddressTwo: constituentSubmissionData?.constituentAddressTwo?.trim(),
-        constituentCity: constituentSubmissionData?.constituentCity?.trim(),
-        constituentState: constituentSubmissionData?.constituentState?.trim(),
-        constituentZip: constituentSubmissionData?.constituentZip?.trim(),
-        constituentEmailBody: constituentSubmissionData?.constituentEmailBody?.trim(),
-        formID: constituentSubmissionData?.formID
-    }
-
+    const constituentData = normalizeConstituentData(constituentSubmissionData);
+    await validateFormID();
     const constituentID = await upsertConstituent();
-    const messageSentToLegislators = await sendGridSubmit(constituentID, normalizedConstituentSubmissionData);
+    const messageSentToLegislators = await sendGridSubmit(constituentID, constituentData);
     await insertConstituentSubmission();
+
+
+    async function validateFormID() {
+        const { data: formExists, error: formError } = await supabase
+            .from("forms")
+            .select("id")
+            .eq("id", constituentData.formID)
+            .maybeSingle();
+
+        if (formError || !formExists) {
+            console.error("Invalid form ID submitted:", constituentData.formID);
+            return redirect("/error");
+        }
+    }
 
 
     async function insertConstituentSubmission() {
@@ -34,20 +36,20 @@ export async function constituentSubmission( constituentSubmissionData ) {
                 .from('constituent_submissions')
                 .insert({
                     constituent_id: constituentID,
-                    form_id: normalizedConstituentSubmissionData.formID,
-                    email_body: normalizedConstituentSubmissionData.constituentEmailBody
+                    form_id: constituentData.formID,
+                    email_body: constituentData.constituentEmailBody
                 })
     
             if (error) {
                 console.error("Error inserting record into DB: ", error);
-                redirect('/error');
+                return redirect('/error');
             }
             
-            redirect(`/connect/success/${normalizedConstituentSubmissionData.formID}`);
+            return redirect(`/connect/success/${constituentData.formID}`);
         }
         else {
             console.error("SendGrid failed. Not inserting submission.");
-            redirect('/error');
+            return redirect('/error');
         }
     }
 
@@ -56,27 +58,27 @@ export async function constituentSubmission( constituentSubmissionData ) {
         const { data, error } = await supabase
             .from('constituents')
             .upsert({
-                email: normalizedConstituentSubmissionData.constituentEmail,
-                first_name: normalizedConstituentSubmissionData.constituentFirstName,
-                last_name: normalizedConstituentSubmissionData.constituentLastName,
-                phone: normalizedConstituentSubmissionData.constituentPhone,
-                address_1: normalizedConstituentSubmissionData.constituentAddress,
-                address_2: normalizedConstituentSubmissionData.constituentAddressTwo,
-                city: normalizedConstituentSubmissionData.constituentCity,
-                state: normalizedConstituentSubmissionData.constituentState,
-                zip: normalizedConstituentSubmissionData.constituentZip
+                email: constituentData.constituentEmail,
+                first_name: constituentData.constituentFirstName,
+                last_name: constituentData.constituentLastName,
+                phone: constituentData.constituentPhone,
+                address_1: constituentData.constituentAddress,
+                address_2: constituentData.constituentAddressTwo,
+                city: constituentData.constituentCity,
+                state: constituentData.constituentState,
+                zip: constituentData.constituentZip
             }, { onConflict: 'email' })
             .select('id')
 
 
         if (error) {
             console.error("Error upserting constituent: ", error);
-            redirect('/error');
+            return redirect('/error');
         }
 
         if (!data || !data.length) {
             console.error("No data returned from upsert.");
-            redirect('/error');
+            return redirect('/error');
         }
         return data[0].id;
     }
