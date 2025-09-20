@@ -1,209 +1,84 @@
+// First Name	100	VARCHAR(100)
+// Last Name	100	VARCHAR(100)
+// Email	254	VARCHAR(254)
+// Phone	20	VARCHAR(20)
+// Address 1	255	VARCHAR(255)
+// Address 2	255	VARCHAR(255)
+// City	100	VARCHAR(100)
+// State	20	VARCHAR(20)
+// ZIP	10	VARCHAR(10)
+// Email Body	2000	TEXT
+
 
 
 
 const fakeLegislators = [
   {
-    first_name: "John",
-    last_name: "Smith",
-    email: "john.smith@mailinator.com",
-    district: 1,
-    county: "Redwood",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
+    id: '11111111-aaaa-4444-bbbb-cccccccccccc',
+    created_at: '2025-07-15T14:10:20.123456+00:00',
+    first_name: 'John',
+    last_name: 'Smith',
+    email: 'john.coolguy@mailinator.com',
+    district: '1',
+    county: 'Redwood',
+    party: 'Democrat',
+    chamber: 'House',
+    middle_name: null,
+    title: 'Rep.'
   },
   {
-    first_name: "Emily",
-    last_name: "Johnson",
-    email: "emily.johnson@mailinator.com",
-    district: 2,
-    county: "Bluegrass",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
+    id: '22222222-bbbb-5555-cccc-dddddddddddd',
+    created_at: '2025-07-15T14:11:30.654321+00:00',
+    first_name: 'Emily',
+    last_name: 'Johnson',
+    email: 'emily.johnson@mailinator.com',
+    district: '2',
+    county: 'Bluegrass',
+    party: 'Republican',
+    chamber: 'Senate',
+    middle_name: null,
+    title: 'Sen.'
   },
   {
-    first_name: "Jacob",
-    last_name: "Lee",
-    email: "jacob.lee@mailinator.com",
-    district: 3,
-    county: "Oakwood",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
+    id: '33333333-cccc-6666-dddd-eeeeeeeeeeee',
+    created_at: '2025-07-15T14:12:45.789012+00:00',
+    first_name: 'Jacob',
+    last_name: 'Lee',
+    email: 'jacob.lee@mailinator.com',
+    district: '3',
+    county: 'Oakwood',
+    party: 'Democrat',
+    chamber: 'House',
+    middle_name: null,
+    title: 'Rep.'
   },
   {
-    first_name: "Sarah",
-    last_name: "Adams",
-    email: "sarah.adams@mailinator.com",
-    district: 4,
-    county: "Windridge",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
+    id: '44444444-dddd-7777-eeee-ffffffffffff',
+    created_at: '2025-07-15T14:13:55.321098+00:00',
+    first_name: 'Sophia',
+    last_name: 'Martinez',
+    email: 'sophia.martinez@mailinator.com',
+    district: '4',
+    county: 'Riverbend',
+    party: 'Republican',
+    chamber: 'Senate',
+    middle_name: null,
+    title: 'Sen.'
   },
   {
-    first_name: "Michael",
-    last_name: "Brown",
-    email: "michael.brown@mailinator.com",
-    district: 5,
-    county: "Sunnydale",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Olivia",
-    last_name: "Martinez",
-    email: "olivia.martinez@mailinator.com",
-    district: 6,
-    county: "Riverbend",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "Ethan",
-    last_name: "Clark",
-    email: "ethan.clark@mailinator.com",
-    district: 7,
-    county: "Maple Creek",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Ava",
-    last_name: "Wilson",
-    email: "ava.wilson@mailinator.com",
-    district: 8,
-    county: "Cedar Hill",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "Noah",
-    last_name: "Turner",
-    email: "noah.turner@mailinator.com",
-    district: 9,
-    county: "Pine Hollow",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Mia",
-    last_name: "Brooks",
-    email: "mia.brooks@mailinator.com",
-    district: 10,
-    county: "Fox Ridge",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "Liam",
-    last_name: "Cooper",
-    email: "liam.cooper@mailinator.com",
-    district: 11,
-    county: "Stonebridge",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Sophia",
-    last_name: "Rivera",
-    email: "sophia.rivera@mailinator.com",
-    district: 12,
-    county: "Elm Grove",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "James",
-    last_name: "Hayes",
-    email: "james.hayes@mailinator.com",
-    district: 13,
-    county: "Briarwood",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Isabella",
-    last_name: "Price",
-    email: "isabella.price@mailinator.com",
-    district: 14,
-    county: "Green Valley",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "Benjamin",
-    last_name: "Hughes",
-    email: "benjamin.hughes@mailinator.com",
-    district: 15,
-    county: "Silver Lake",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Charlotte",
-    last_name: "Diaz",
-    email: "charlotte.diaz@mailinator.com",
-    district: 16,
-    county: "Meadowbrook",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "Elijah",
-    last_name: "Reed",
-    email: "elijah.reed@mailinator.com",
-    district: 17,
-    county: "Willowdale",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Amelia",
-    last_name: "Cox",
-    email: "amelia.cox@mailinator.com",
-    district: 18,
-    county: "Forest Hills",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
-  },
-  {
-    first_name: "Lucas",
-    last_name: "Kelly",
-    email: "lucas.kelly@mailinator.com",
-    district: 19,
-    county: "Lakeside",
-    party: "Democrat",
-    chamber: "House",
-    title: "Rep."
-  },
-  {
-    first_name: "Harper",
-    last_name: "Barnes",
-    email: "harper.barnes@mailinator.com",
-    district: 20,
-    county: "Ironwood",
-    party: "Republican",
-    chamber: "Senate",
-    title: "Sen."
+    id: '55555555-eeee-8888-ffff-000000000000',
+    created_at: '2025-07-15T14:15:05.987654+00:00',
+    first_name: 'David',
+    last_name: 'Nguyen',
+    email: 'david.nguyen@mailinator.com',
+    district: '5',
+    county: 'Maplewood',
+    party: 'Democrat',
+    chamber: 'House',
+    middle_name: null,
+    title: 'Rep.'
   }
 ];
-
 
 
 export default fakeLegislators;

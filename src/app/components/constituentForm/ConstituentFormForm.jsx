@@ -85,6 +85,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="firstName"
                             value={firstName}
+                            maxLength={100}
                             onChange={(e) => setFirstName(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
@@ -98,6 +99,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="lastName"
                             value={lastName}
+                            maxLength={100}
                             onChange={(e) => setLastName(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
@@ -111,6 +113,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="email"
                             id="email"
                             value={email}
+                            maxLength={254}
                             onChange={(e) => setEmail(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
@@ -124,6 +127,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="phone"
                             value={phone}
+                            maxLength={20}
                             onChange={(e) => setPhone(e.target.value)}
                             onBlur={() => setPhone(formatPhoneNumber(phone))}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
@@ -142,6 +146,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="address"
                             value={address}
+                            maxLength={255}
                             onChange={(e) => setAddress(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
@@ -155,6 +160,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="addressTwo"
                             value={addressTwo}
+                            maxLength={255}
                             onChange={(e) => setAddressTwo(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
@@ -168,6 +174,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="city"
                             value={city}
+                            maxLength={100}
                             onChange={(e) => setCity(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />
@@ -184,6 +191,7 @@ export default function ConstituentFormForm({ formData }) {
                             type="text"
                             id="zip"
                             value={zip}
+                            maxLength={10}
                             onChange={(e) => setZip(e.target.value)}
                             className='peer p-2 outline-none border-2 border-gray-600 font-bold focus:text-tfl-green focus:border-tfl-green hover:text-tfl-green hover:border-tfl-green text-xs md:text-sm'
                         />

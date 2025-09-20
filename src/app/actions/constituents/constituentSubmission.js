@@ -3,27 +3,31 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { sendGridSubmit } from "./sendGridSubmit";
+import normalizeConstituentData from "./normalizeConstituentData";
 
 
 export async function constituentSubmission( constituentSubmissionData ) {
     const supabase = await createClient();
 
-    const { constituentFirstName,
-            constituentLastName,
-            constituentEmail,
-            constituentPhone,
-            constituentAddress,
-            constituentAddressTwo,
-            constituentCity,
-            constituentState,
-            constituentZip,
-            constituentEmailBody,
-            formID
-        } = constituentSubmissionData;
-
+    const constituentData = normalizeConstituentData(constituentSubmissionData);
+    await validateFormID();
     const constituentID = await upsertConstituent();
-    const messageSentToLegislators = await sendGridSubmit(constituentID, constituentSubmissionData);
+    const messageSentToLegislators = await sendGridSubmit(constituentID, constituentData);
     await insertConstituentSubmission();
+
+
+    async function validateFormID() {
+        const { data: formExists, error: formError } = await supabase
+            .from("forms")
+            .select("id")
+            .eq("id", constituentData.formID)
+            .maybeSingle();
+
+        if (formError || !formExists) {
+            console.error("Invalid form ID submitted:", constituentData.formID);
+            return redirect("/error");
+        }
+    }
 
 
     async function insertConstituentSubmission() {
@@ -32,20 +36,20 @@ export async function constituentSubmission( constituentSubmissionData ) {
                 .from('constituent_submissions')
                 .insert({
                     constituent_id: constituentID,
-                    form_id: formID,
-                    email_body: constituentEmailBody
+                    form_id: constituentData.formID,
+                    email_body: constituentData.constituentEmailBody
                 })
     
             if (error) {
                 console.error("Error inserting record into DB: ", error);
-                redirect('/error');
+                return redirect('/error');
             }
-    
-            redirect(`/connect/success/${formID}`);
+            
+            return redirect(`/connect/success/${constituentData.formID}`);
         }
         else {
             console.error("SendGrid failed. Not inserting submission.");
-            redirect('/error');
+            return redirect('/error');
         }
     }
 
@@ -54,25 +58,28 @@ export async function constituentSubmission( constituentSubmissionData ) {
         const { data, error } = await supabase
             .from('constituents')
             .upsert({
-                email: constituentEmail,
-                first_name: constituentFirstName,
-                last_name: constituentLastName,
-                phone: constituentPhone,
-                address_1: constituentAddress,
-                address_2: constituentAddressTwo,
-                city: constituentCity,
-                state: constituentState,
-                zip: constituentZip
+                email: constituentData.constituentEmail,
+                first_name: constituentData.constituentFirstName,
+                last_name: constituentData.constituentLastName,
+                phone: constituentData.constituentPhone,
+                address_1: constituentData.constituentAddress,
+                address_2: constituentData.constituentAddressTwo,
+                city: constituentData.constituentCity,
+                state: constituentData.constituentState,
+                zip: constituentData.constituentZip
             }, { onConflict: 'email' })
             .select('id')
 
 
         if (error) {
             console.error("Error upserting constituent: ", error);
-            redirect('/error');
+            return redirect('/error');
         }
 
-        const id = data[0].id;
-        return id;
+        if (!data || !data.length) {
+            console.error("No data returned from upsert.");
+            return redirect('/error');
+        }
+        return data[0].id;
     }
 }
