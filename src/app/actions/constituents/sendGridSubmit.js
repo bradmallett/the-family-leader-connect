@@ -1,9 +1,8 @@
-// import { getSelectedLegislators } from "../legislators/getSelectedLegislators";
+import { getSelectedLegislators } from "../legislators/getSelectedLegislators";
 // import getLegislatorsByIDs from "../legislators/getLegislatorsByIDs";
 import fakeLegislators from "../legislators/fakeLegislators";
 import sgMail from '@sendgrid/mail';
 import { escapeHtml } from "./escapeHtml";
-
 
 if (!process.env.SENDGRID_API_KEY) {
     throw new Error("SENDGRID_API_KEY is not set in environment variables");
@@ -27,7 +26,6 @@ export async function sendGridSubmit( constituentID, constituentData ) {
         constituentState
     }  = constituentData;
 
-
     // Escape only for HTML output
     const safeFirstName = escapeHtml(constituentFirstName);
     const safeLastName = escapeHtml(constituentLastName);
@@ -37,22 +35,62 @@ export async function sendGridSubmit( constituentID, constituentData ) {
     const safeState = escapeHtml(constituentState);
 
     // not going to use real legislators yet
-    // const legislatorIDs = await getSelectedLegislators(constituentData.formID);
     // const legislators = await getLegislatorsByIDs(legislatorIDs);
 
-    const messages = fakeLegislators.map(leg => ({
+    const legislatorIdObjects = await getSelectedLegislators(constituentData.formID);
+    const legIDsArray = legislatorIdObjects.map(legID => legID.legislator_id);
+
+    const selectedFakeLegislators = fakeLegislators.filter(fakeLeg => legIDsArray.includes(fakeLeg.ID));
+
+    // {
+    //     ID: '3bcadc85-0c65-4fe3-ac3a-353e024a5a63',
+    //     name: 'Brian K. Lohse',
+    //     title: null,
+    //     firstName: 'Brian',
+    //     middleName: 'K.',
+    //     lastName: 'Lohse',
+    //     email: 'brian.lohse@mailinator.com',
+    //     district: '45',
+    //     county: 'Polk',
+    //     party: 'Republican',
+    //     chamber: 'House'
+    // }
+
+    console.log(selectedFakeLegislators);
+
+    const messages = selectedFakeLegislators.map(leg => ({
         to: leg.email,
-        from: 'test@thefamilyleader.com',
-        subject: `Message for ${leg.first_name} ${leg.last_name}`,
-        text: `${constituentFirstName} ${constituentLastName} (${constituentEmail})\n${constituentCity}, ${constituentState}\n\nWrote:\n${constituentEmailBody}`,
+        from: 'constituents@thefamilyleader.com',
+        subject: `Constituent message for ${leg.title ? leg.title + ' ' : ''}${leg.name}`,
+        text: `${constituentFirstName} ${constituentLastName} (${constituentEmail})
+            ${constituentCity}, ${constituentState}
+
+            Wrote:
+            ${constituentEmailBody}
+
+            ---
+            This message was delivered via The FAMiLY Leader constituent outreach platform on behalf of an Iowa resident. 
+            To ensure you continue receiving constituent communications, please consider adding constituents@thefamilyleader.com to your address book.`,
         html: `
             <p><strong>From:</strong> ${safeFirstName} ${safeLastName} (${safeEmail})</p>
             <p>${safeCity}, ${safeState}</p>
             <br />
             <p><strong>Message:</strong></p>
             <p>${safeBody}</p>
+            <br />
+            <hr />
+            <p style="font-size:12px; color:#555;">
+            This message was delivered via <strong>The FAMiLY Leader</strong> constituent outreach platform on behalf of an Iowa resident.  
+            To ensure you continue receiving constituent communications, please consider adding constituents@thefamilyleader.com to your address book.
+            </p>
         `,
-        replyTo: { email: constituentEmail, name: `${constituentFirstName} ${constituentLastName}` }
+        replyTo: { email: constituentEmail, name: `${constituentFirstName} ${constituentLastName}` },
+        
+        // Disable click tracking but keep open tracking -- if emails are being spam filtered consider setting openTracking to false
+        trackingSettings: {
+            clickTracking: { enable: false },
+            openTracking: { enable: true },
+        }
     }));
 
     try {
