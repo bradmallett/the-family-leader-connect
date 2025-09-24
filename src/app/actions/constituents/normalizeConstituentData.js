@@ -8,8 +8,8 @@ export default function normalizeConstituentData(constituentSubmissionData) {
     const constituentPhone = (constituentSubmissionData?.constituentPhone || "").trim();
     const constituentAddress = (constituentSubmissionData?.constituentAddress || "").trim();
     const constituentAddressTwo = (constituentSubmissionData?.constituentAddressTwo || "").trim();
-    const constituentCity = (constituentSubmissionData?.constituentCity || "").trim();
-    const constituentState = (constituentSubmissionData?.constituentState || "").trim();
+    const constituentCity = toTitleCase((constituentSubmissionData?.constituentCity || "").trim());
+    const constituentState = toTitleCase((constituentSubmissionData?.constituentState || "").trim());
     const constituentZip = (constituentSubmissionData?.constituentZip || "").trim();
     const constituentEmailBody = (constituentSubmissionData?.constituentEmailBody || "").trim();
     const formID = constituentSubmissionData?.formID;
@@ -85,4 +85,18 @@ export default function normalizeConstituentData(constituentSubmissionData) {
         formID
     };
 
+}
+
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(/\s+/)               // split on any whitespace
+    .filter(Boolean)            // remove empty strings
+    .map(word => {
+      // if word has at least 1 char, capitalize first, leave the rest
+      return word.length > 0
+        ? word.charAt(0).toUpperCase() + word.slice(1)
+        : "";
+    })
+    .join(" ");
 }
