@@ -10,7 +10,8 @@ export default async function getAllForms() {
         `
             id,
             form_name,
-            created_at
+            created_at,
+            constituent_submissions(count)
         `
     )
     .order("created_at", { ascending: false });
@@ -19,5 +20,9 @@ export default async function getAllForms() {
     console.log("error fetching all forms:", error);
   }
 
-  return data;
+    // unwrap submission count for easier use in UI
+  return data.map(form => ({
+    ...form,
+    submission_count: form.constituent_submissions[0]?.count || 0
+  }));
 }
