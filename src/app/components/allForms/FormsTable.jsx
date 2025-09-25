@@ -44,7 +44,7 @@ export default function FormsTable({ allForms }) {
                             <tr key={i} className="border-b border-gray-400">
                                 <td className="p-2 border-r border-gray-400">{form.form_name}</td>
                                 <td className="p-2 font-bold border-r border-gray-400">{new Date(form.created_at).toLocaleDateString('en-US')}</td>
-                                <td className="p-2 font-bold border-r border-gray-400">27</td>
+                                <td className="p-2 font-bold border-r border-gray-400 text-tfl-green">{form.submission_count.toLocaleString()}</td>
                                 <td className="p-2 flex justify-around items-center ">
                                     <Link href={`/connect/${form.id}`}>
                                         <ShareIcon className="w-5 h-5 hover:text-tfl-green cursor-pointer"/>
