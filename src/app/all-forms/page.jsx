@@ -21,6 +21,10 @@ export default async function allForms() {
   return (
     <div className='max-w-[1800px] mx-auto'>
       <HeaderAdmin user={user}/>
+      <div className='mx-auto text-center my-10 max-w-[900px] px-10'>
+        <p className='font-bold text-lg text-red-600'>CAUTION - APP LIVE AND REAL EMAILS WILL BE SENT!</p>
+        <p className='text-sm text-red-600'>Before submiting a form as a constituent - verify the selected legislators attached to form by clicking on the edit/pencil icon. The selected legislators should only be "placeholder" legislators - eg.. Bryan Lee</p>
+      </div>
       <AllForms />
     </div>
   );

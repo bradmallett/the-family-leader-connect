@@ -1,8 +1,9 @@
 import { getSelectedLegislators } from "../legislators/getSelectedLegislators";
-// import getLegislatorsByIDs from "../legislators/getLegislatorsByIDs";
-import fakeLegislators from "../legislators/fakeLegislators";
+// import fakeLegislators from "../legislators/fakeLegislators";
+import getAllLegislators from "../legislators/getAllLegislators";
 import sgMail from '@sendgrid/mail';
 import { escapeHtml } from "./escapeHtml";
+import { Truculenta } from "next/font/google";
 
 if (!process.env.SENDGRID_API_KEY) {
     throw new Error("SENDGRID_API_KEY is not set in environment variables");
@@ -16,6 +17,8 @@ export async function sendGridSubmit( constituentID, constituentData ) {
         console.error("constituentID missing -- skipping sending email via sendGrid.")
         return false;
     }
+
+    const allLegislators = await getAllLegislators();
 
     let { 
         constituentFirstName, 
@@ -34,34 +37,24 @@ export async function sendGridSubmit( constituentID, constituentData ) {
     const safeCity = escapeHtml(constituentCity);
     const safeState = escapeHtml(constituentState);
 
-    // not going to use real legislators yet
-    // const legislators = await getLegislatorsByIDs(legislatorIDs);
+
 
     const legislatorIdObjects = await getSelectedLegislators(constituentData.formID);
     const legIDsArray = legislatorIdObjects.map(legID => legID.legislator_id);
 
-    const selectedFakeLegislators = fakeLegislators.filter(fakeLeg => legIDsArray.includes(fakeLeg.ID));
+    // USING FAKE LEGISLATORS HERE:
+    // const selectedFakeLegislators = fakeLegislators.filter(fakeLeg => legIDsArray.includes(fakeLeg.ID));
 
-    // {
-    //     ID: '3bcadc85-0c65-4fe3-ac3a-353e024a5a63',
-    //     name: 'Brian K. Lohse',
-    //     title: null,
-    //     firstName: 'Brian',
-    //     middleName: 'K.',
-    //     lastName: 'Lohse',
-    //     email: 'brian.lohse@mailinator.com',
-    //     district: '45',
-    //     county: 'Polk',
-    //     party: 'Republican',
-    //     chamber: 'House'
-    // }
+    // USING REAL LEGISLATORS !!!!!
+    const selectedLegislators = allLegislators.filter(legislator => legIDsArray.includes(legislator.ID));
+    console.log(selectedLegislators);
 
-    console.log(selectedFakeLegislators);
 
-    const messages = selectedFakeLegislators.map(leg => ({
+    const messages = selectedLegislators.map(leg => ({
+        // will use leg.email for "to" ---
         to: leg.email,
         from: 'constituents@thefamilyleader.com',
-        subject: `Constituent message for ${leg.title ? leg.title + ' ' : ''}${leg.name}`,
+        subject: `Constituent message for ${leg.name}`,
         text: `${constituentFirstName} ${constituentLastName} (${constituentEmail})
             ${constituentCity}, ${constituentState}
 
@@ -84,7 +77,7 @@ export async function sendGridSubmit( constituentID, constituentData ) {
             To ensure you continue receiving constituent communications, please consider adding constituents@thefamilyleader.com to your address book.
             </p>
         `,
-        replyTo: { email: constituentEmail, name: `${constituentFirstName} ${constituentLastName}` },
+        replyTo: { email: "info@thefamilyleader.com", name: 'The FAMiLY Leader Constituents' },
         
         // Disable click tracking but keep open tracking -- if emails are being spam filtered consider setting openTracking to false
         trackingSettings: {

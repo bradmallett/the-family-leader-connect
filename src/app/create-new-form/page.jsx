@@ -24,7 +24,11 @@ export default async function createNewForm() {
   return (
     <div className='max-w-[1800px] mx-auto font-inter'>
         <HeaderAdmin user={data.user}/>
-           <CreateFormForm legislators={legislators} />
+        <div className='mx-auto text-center my-10 max-w-[900px] px-10'>
+            <p className='font-bold text-lg text-red-600'>CAUTION - APP LIVE AND REAL EMAILS WILL BE SENT!</p>
+            <p className='text-sm text-red-600'>Before creating a form - verify the selected legislator is a "placeholder" - eg... Bryan Lee</p>
+        </div>
+        <CreateFormForm legislators={legislators} />
     </div>
     );
 }
