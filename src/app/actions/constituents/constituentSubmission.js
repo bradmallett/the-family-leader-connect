@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { sendGridSubmit } from "./sendGridSubmit";
 import normalizeConstituentData from "./normalizeConstituentData";
 
 
@@ -12,7 +11,6 @@ export async function constituentSubmission( constituentSubmissionData ) {
     const constituentData = normalizeConstituentData(constituentSubmissionData);
     await validateFormID();
     const constituentID = await upsertConstituent();
-    const messageSentToLegislators = await sendGridSubmit(constituentID, constituentData);
     await insertConstituentSubmission();
 
 
@@ -31,26 +29,25 @@ export async function constituentSubmission( constituentSubmissionData ) {
 
 
     async function insertConstituentSubmission() {
-        if(messageSentToLegislators) {
-            const { error } = await supabase
-                .from('constituent_submissions')
-                .insert({
-                    constituent_id: constituentID,
-                    form_id: constituentData.formID,
-                    email_body: constituentData.constituentEmailBody
-                })
-    
+        if(!constituentID) {
+            console.error("No constituent ID found.");
+            return redirect('/error');
+        }
+
+        const { error } = await supabase
+            .from('constituent_submissions')
+            .insert({
+                constituent_id: constituentID,
+                form_id: constituentData.formID,
+                email_body: constituentData.constituentEmailBody
+            })
+
             if (error) {
                 console.error("Error inserting record into DB: ", error);
                 return redirect('/error');
             }
             
             return redirect(`/connect/success/${constituentData.formID}`);
-        }
-        else {
-            console.error("SendGrid failed. Not inserting submission.");
-            return redirect('/error');
-        }
     }
 
 
@@ -69,7 +66,6 @@ export async function constituentSubmission( constituentSubmissionData ) {
                 zip: constituentData.constituentZip
             }, { onConflict: 'email' })
             .select('id')
-
 
         if (error) {
             console.error("Error upserting constituent: ", error);
