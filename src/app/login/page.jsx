@@ -55,6 +55,7 @@ export default function LoginPage() {
           <button formAction={login} className="p-2 font-bold cursor-pointer bg-gray-600 text-paperSwatch hover:bg-tfl-green">LOGIN</button>
           {/* <button formAction={signup}>Sign up</button> */}
         </form>
+        <p className="mt-5 text-sm text-center font-bold text-tfl-green">This is a demo of an internal tool.<br /> Admin credentials are available upon request.</p>
       </div>
 
     </div>
