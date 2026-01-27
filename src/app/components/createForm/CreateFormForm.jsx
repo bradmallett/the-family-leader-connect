@@ -9,7 +9,7 @@ export default function CreateFormForm({ legislators }) {
     const [formName, setFormName] = useState('');
     const [constituentDirection, setConstituentDirection] = useState('');
     const [emailBody, setEmailBody] = useState('');
-    const [successMessage, setSuccessMessage] = useState('Your message has been emailed to your local legislators. You can close this window.');
+    const [successMessage, setSuccessMessage] = useState('Demo: Your message has been recorded. In the live application, it would be sent to the selected legislators.');
     const [errorMessage, setErrorMessage] = useState('');
     const [selectionString, setSelectionString] = useState('');
 
