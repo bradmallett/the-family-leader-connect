@@ -15,16 +15,18 @@ export async function constituentSubmission( constituentSubmissionData ) {
 
 
     async function validateFormID() {
-        const { data: formExists, error: formError } = await supabase
+        const { data: form, error: formError } = await supabase
             .from("forms")
-            .select("id")
+            .select("id, is_active")
             .eq("id", constituentData.formID)
             .maybeSingle();
 
-        if (formError || !formExists) {
+        if (formError || !form) {
             console.error("Invalid form ID submitted:", constituentData.formID);
             return redirect("/error");
         }
+
+        if (!form.is_active) return redirect('/connect/not-active');
     }
 
 

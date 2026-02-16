@@ -24,7 +24,7 @@ export default function ConstituentFormForm({ formData }) {
         setState(selectedState);
     }
 
-    function handleSendMessage() {
+    async function handleSendMessage() {
         if (!firstName || !lastName || !email || !address || !city || !zip) {
             setFormError('Please fill out all required fields.');
             return;
@@ -61,10 +61,10 @@ export default function ConstituentFormForm({ formData }) {
             constituentState: state,
             constituentZip: zip.trim(),
             constituentEmailBody: emailBody.trim(),
-            formID: formData.id
+            formID: formData.id,
         }
 
-       constituentSubmission(constituentSubmissionData);
+       await constituentSubmission(constituentSubmissionData);
     }
 
     return (

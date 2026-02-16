@@ -11,7 +11,8 @@ export default async function getAllForms() {
             id,
             form_name,
             created_at,
-            constituent_submissions(count)
+            constituent_submissions(count),
+            is_active
         `
     )
     .order("created_at", { ascending: false });
