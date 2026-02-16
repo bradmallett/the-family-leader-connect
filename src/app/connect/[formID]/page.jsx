@@ -2,10 +2,13 @@ import { getFormByID } from "@/app/actions/forms/getFormByID";
 import HeaderConnect from "@/app/components/HeaderConnect";
 import ConstituentFormForm from "@/app/components/constituentForm/ConstituentFormForm";
 import ConstituentFormFooter from "@/app/components/constituentForm/ConstituentFormFooter";
+import { redirect } from "next/navigation";
 
 export default async function Page({ params }) {
     const { formID } = await params;
     const formData = await getFormByID(formID);
+
+    if(!formData.is_active) redirect('/connect/not-active');
 
     return (
         <div className="min-h-screen flex flex-col justify-between">

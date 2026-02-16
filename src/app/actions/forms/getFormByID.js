@@ -14,7 +14,8 @@ export async function getFormByID(formID) {
             constituent_direction,
             constituent_email_prompt,
             success_message,
-            selection_string
+            selection_string,
+            is_active
         `
     )
     .eq('id', formID);
