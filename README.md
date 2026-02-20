@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# The Family Leader – Email Grouping Web App (Demo)
 
-First, run the development server:
+Live Demo:
+[https://the-family-leader-connect.vercel.app/](https://the-family-leader-connect.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Overview
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+This is a full-stack internal web application built to organize and send targeted emails to state legislators.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application allows admin users to:
+- Filter and group legislators by district, county, party, or chamber
+- Create dynamic recipient groups
+- Build and manage reusable email templates
+- Enable constituents to send messages to multiple legislators through a single form submission
+- This demo version showcases the core architecture and feature set.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Demo Login
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Username: bmallett2@gmail.com
+- Password: bmallett2
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+(Note: This is a demo environment. Email sending is simulated.)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Supabase (PostgreSQL)
+- SendGrid (email service)
+- Vercel (deployment)
+
+
+## Architecture Highlights
+
+- Server Actions for secure data mutations
+- Dynamic form generation
+- Full vertical slice from UI → Server → Database → Email service
+- Admin form activation toggle (is_active) with server-side enforcement
+
+
+## Key Features
+
+- Admin dashboard to create and manage forms
+- Legislator filtering + grouping system
+- Constituent submission tracking
+- Email template reuse 
+- Active/inactive form control with both client and server validation
+- Production deployment workflow using feature branches + preview builds
